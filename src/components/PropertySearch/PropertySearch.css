@@ -1,0 +1,239 @@
+/* Custom styles for Property Search */
+.form-control:focus,
+.form-select:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #1976d2 30%, #2196f3 90%);
+  border: none;
+  box-shadow: 0 3px 5px 2px rgba(33, 150, 243, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px 2px rgba(33, 150, 243, 0.4);
+}
+
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-method-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+   height: 100%;
+}
+
+.search-method-card:hover {
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+}
+
+.search-method-card.selected {
+  border-color: #2196f3;
+  background-color: rgba(33, 150, 243, 0.02);
+}
+
+.method-icon {
+  font-size: 2rem;
+  color: #2196f3;
+  margin-bottom: 1rem;
+}
+
+.form-floating {
+  margin-bottom: 1rem;
+}
+
+.form-floating > label {
+  padding: 1rem;
+  color: #666;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: #2196f3;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Enhanced Styles for Search Steps */
+.bg-gradient-primary {
+  background: linear-gradient(45deg, #1976d2 30%, #2196f3 90%);
+}
+
+.search-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+/* Date Picker Customization */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: 'Roboto', sans-serif;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.react-datepicker__header {
+  background: #2196f3;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding-top: 12px;
+}
+
+.react-datepicker__current-month {
+  color: white;
+  font-weight: 500;
+}
+
+.react-datepicker__day-name {
+  color: white;
+}
+
+.react-datepicker__day--selected {
+  background-color: #2196f3;
+  border-radius: 50%;
+}
+
+.react-datepicker__day:hover {
+  border-radius: 50%;
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card and Paper Styles */
+.card,
+.MuiPaper-root {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover,
+.MuiPaper-root:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Alert Customization */
+.alert {
+  border-radius: 8px;
+}
+
+.alert-info {
+  background-color: rgba(33, 150, 243, 0.05);
+  border-color: rgba(33, 150, 243, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2196f3;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1976d2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-methods-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .step-container {
+    padding: 1rem;
+  }
+}
+
+/* Material-UI Overrides */
+.MuiFormControl-root {
+  margin-bottom: 1rem;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #2196f3;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #2196f3;
+}
+
+.MuiSelect-select {
+  padding: 12px !important;
+}
+
+.MuiAlert-root {
+  align-items: center;
+}
+
+.MuiAlert-icon {
+  font-size: 1.5rem;
+}
+
+/* Progress Indicator Enhancements */
+.progress-indicator {
+  position: relative;
+  padding: 1rem 0;
+}
+
+.progress-step {
+  position: relative;
+  z-index: 1;
+}
+
+.progress-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: 0;
+}
+
+.progress-line-active {
+  background: #2196f3;
+}
