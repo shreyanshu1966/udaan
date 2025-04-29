@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import './App.css'
-import PropertySearchForm from './components/PropertySearch/PropertySearchForm'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import PropertySearchForm from './components/PropertySearch/PropertySearchForm';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <PropertySearchForm />
-    </div>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<PropertySearchForm />}/>
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
