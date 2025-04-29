@@ -42,7 +42,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex-shrink-0 flex items-center cursor-pointer mb-4" onClick={() => navigate('/')}>
-              <span className="text-primary text-xl font-bold">EstateSearch</span>
+              <span className="text-primary text-xl font-bold">OMNIPROP</span>
             </div>
             <p className="text-gray-600 mb-4">
               Comprehensive property search platform across multiple databases.

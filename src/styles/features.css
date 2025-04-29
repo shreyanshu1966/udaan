@@ -1,0 +1,20 @@
+.feature-card {
+  @apply bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+  transform: translateY(0);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.text-secondary {
+  @apply text-teal-600;
+}
+
+.from-primary {
+  @apply from-slate-800;
+}
+
+.to-secondary {
+  @apply to-teal-600;
+}
