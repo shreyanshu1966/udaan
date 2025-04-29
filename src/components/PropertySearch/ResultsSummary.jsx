@@ -4,6 +4,8 @@ import { formatDate } from './utils';
 import { generatePDF } from '../../utils/pdfGenerator';
 import PdfLoadingOverlay from './PdfLoadingOverlay';
 import PdfTemplate from './PdfTemplate';
+import { analyzePropertyRisks, getOverallRiskLevel, RISK_LEVELS } from '../../utils/riskAnalysis';
+import { calculateInvestmentScore } from '../../utils/investmentScoring';
 
 const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, setActiveStep }) => {
   const [isPdfLoading, setIsPdfLoading] = useState(false);
@@ -240,6 +242,9 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
                 </div>
               </div>
             </div>
+
+            <RiskAnalysisPanel propertyData={submittedData.generatedData} />
+            <InvestmentScorePanel propertyData={submittedData.generatedData} />
             
             <div className="d-flex justify-content-between mt-3">
               <div>
@@ -286,5 +291,128 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
     </>
   );
 };
+
+const RiskAnalysisPanel = ({ propertyData }) => {
+  const risks = analyzePropertyRisks(propertyData);
+  const overallRisk = getOverallRiskLevel(risks);
+  
+  // Map risk levels to colors
+  const riskColors = {
+    [RISK_LEVELS.HIGH]: '#f44336',  // red
+    [RISK_LEVELS.MEDIUM]: '#ff9800', // orange
+    [RISK_LEVELS.LOW]: '#4caf50',   // green
+    [RISK_LEVELS.NONE]: '#4caf50'   // green
+  };
+  
+  return (
+    <div className="mb-4">
+      <h4 className="mb-3">Risk Analysis</h4>
+      <div className="p-3 mb-3" style={{ 
+        backgroundColor: riskColors[overallRisk] + '15',
+        border: `1px solid ${riskColors[overallRisk]}30`,
+        borderRadius: '8px' 
+      }}>
+        <div className="d-flex align-items-center mb-2">
+          <div style={{ 
+            width: '16px', 
+            height: '16px', 
+            borderRadius: '50%', 
+            backgroundColor: riskColors[overallRisk],
+            marginRight: '8px'
+          }}></div>
+          <strong>Overall Risk: {overallRisk.charAt(0).toUpperCase() + overallRisk.slice(1)}</strong>
+        </div>
+        
+        {risks.length === 0 && (
+          <p className="mb-0">No significant risks detected for this property.</p>
+        )}
+        
+        {risks.length > 0 && (
+          <ul className="mb-0 ps-3">
+            {risks.map((risk, index) => (
+              <li key={index}><strong>{risk.message}</strong>: {risk.details}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const InvestmentScorePanel = ({ propertyData }) => {
+  const scoreData = calculateInvestmentScore(propertyData);
+  
+  // Map score ratings to colors
+  const ratingColors = {
+    'Excellent': '#4caf50',  // green
+    'Good': '#8bc34a',       // light green
+    'Fair': '#ffc107',       // amber
+    'Average': '#ff9800',    // orange
+    'Below Average': '#f44336' // red
+  };
+  
+  return (
+    <div className="mb-4">
+      <h4 className="mb-3">Investment Opportunity Score</h4>
+      <div className="p-3 mb-3" style={{ 
+        backgroundColor: ratingColors[scoreData.rating] + '15',
+        border: `1px solid ${ratingColors[scoreData.rating]}30`,
+        borderRadius: '8px' 
+      }}>
+        <div className="d-flex align-items-center mb-3">
+          <div style={{ 
+            width: '64px', 
+            height: '64px', 
+            borderRadius: '50%', 
+            backgroundColor: ratingColors[scoreData.rating],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '24px',
+            marginRight: '16px'
+          }}>{scoreData.total}</div>
+          <div>
+            <h5 className="mb-0">{scoreData.rating}</h5>
+            <p className="mb-0 text-muted">Investment Opportunity Rating</p>
+          </div>
+        </div>
+        
+        <h6>Score Breakdown</h6>
+        {Object.entries(scoreData.factors).map(([key, factor]) => (
+          factor.score > 0 ? (
+            <div key={key} className="mb-2">
+              <div className="d-flex justify-content-between mb-1">
+                <span>{key.charAt(0).toUpperCase() + key.slice(1)} ({factor.weight * 100}%)</span>
+                <span>{factor.score}/100</span>
+              </div>
+              <div className="progress" style={{ height: '8px' }}>
+                <div 
+                  className="progress-bar" 
+                  role="progressbar" 
+                  style={{ width: `${factor.score}%`, backgroundColor: getProgressColor(factor.score) }} 
+                  aria-valuenow={factor.score} 
+                  aria-valuemin="0" 
+                  aria-valuemax="100">
+                </div>
+              </div>
+              <p className="mb-1 mt-1 small text-muted">{factor.description}</p>
+            </div>
+          ) : null
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Helper function for progress bar colors
+function getProgressColor(score) {
+  if (score >= 80) return '#4caf50';
+  if (score >= 70) return '#8bc34a';
+  if (score >= 60) return '#ffc107';
+  if (score >= 50) return '#ff9800';
+  return '#f44336';
+}
 
 export default ResultsSummary;
