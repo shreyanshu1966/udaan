@@ -249,7 +249,7 @@ const PropertySearchForm = () => {
               {/* Header */}
               <Box 
                 sx={{ 
-                  background: 'linear-gradient(45deg, #1976d2 30%, #2196f3 90%)',
+                  background: 'linear-gradient(45deg, #2c3e50 30%, #26a69a 90%)',
                   padding: 3,
                   color: 'white',
                 }}
@@ -386,6 +386,11 @@ const PropertySearchForm = () => {
                         <button 
                           type="button" 
                           className="btn btn-primary"
+                          style={{ 
+                            backgroundColor: '#2c3e50', 
+                            borderColor: '#2c3e50',
+                            boxShadow: '0 3px 5px 2px rgba(44, 62, 80, 0.3)'
+                          }}
                           onClick={handleNextStep}
                           disabled={!canProceedToNextStep()}
                         >
@@ -395,6 +400,7 @@ const PropertySearchForm = () => {
                         <button 
                           type="submit" 
                           className="btn btn-success"
+                          style={{ backgroundColor: '#26a69a', borderColor: '#26a69a' }}
                           disabled={isSubmitting}
                         >
                           {isSubmitting ? (

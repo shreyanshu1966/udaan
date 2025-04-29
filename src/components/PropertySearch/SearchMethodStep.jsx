@@ -119,7 +119,11 @@ const SearchMethodStep = ({ formik }) => {
                       'primary.main' : 'text.secondary',
                     fontSize: '2rem',
                     mb: 2,
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    // Using our own color directly for customization
+                    ...(formik.values.searchMethod === method.id && {
+                      color: '#26a69a'
+                    }),
                   }}
                 >
                   <method.icon />

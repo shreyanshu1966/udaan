@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +7,11 @@
   font-weight: 400;
   color: rgba(0, 0, 0, 0.87);
   background-color: #f8f9fa;
+  
+  /* Theme colors */
+  --color-primary: #2c3e50;
+  --color-secondary: #26a69a;
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -37,11 +41,11 @@ body {
 }
 
 .hero-gradient {
-  background: linear-gradient(45deg, rgba(25, 118, 210, 0.95), rgba(33, 150, 243, 0.95));
+  background: linear-gradient(45deg, rgba(44, 62, 80, 0.95), rgba(38, 166, 154, 0.95));
 }
 
 .cta-gradient {
-  background: linear-gradient(45deg, #1976d2, #2196f3);
+  background: linear-gradient(45deg, #2c3e50, #26a69a);
 }
 
 .feature-card {

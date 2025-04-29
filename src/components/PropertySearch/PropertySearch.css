@@ -1,20 +1,20 @@
 /* Custom styles for Property Search */
 .form-control:focus,
 .form-select:focus {
-  border-color: #2196f3;
-  box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+  border-color: #26a69a;
+  box-shadow: 0 0 0 0.2rem rgba(38, 166, 154, 0.25);
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #1976d2 30%, #2196f3 90%);
+  background: linear-gradient(45deg, #2c3e50 30%, #26a69a 90%);
   border: none;
-  box-shadow: 0 3px 5px 2px rgba(33, 150, 243, 0.3);
+  box-shadow: 0 3px 5px 2px rgba(38, 166, 154, 0.3);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px 2px rgba(33, 150, 243, 0.4);
+  box-shadow: 0 4px 6px 2px rgba(38, 166, 154, 0.4);
 }
 
 .card {
@@ -44,13 +44,13 @@
 }
 
 .search-method-card.selected {
-  border-color: #2196f3;
-  background-color: rgba(33, 150, 243, 0.02);
+  border-color: #26a69a;
+  background-color: rgba(38, 166, 154, 0.02);
 }
 
 .method-icon {
   font-size: 2rem;
-  color: #2196f3;
+  color: #26a69a;
   margin-bottom: 1rem;
 }
 
@@ -65,7 +65,7 @@
 
 .form-floating > .form-control:focus ~ label,
 .form-floating > .form-control:not(:placeholder-shown) ~ label {
-  color: #2196f3;
+  color: #26a69a;
 }
 
 .cursor-pointer {
@@ -74,7 +74,7 @@
 
 /* Enhanced Styles for Search Steps */
 .bg-gradient-primary {
-  background: linear-gradient(45deg, #1976d2 30%, #2196f3 90%);
+  background: linear-gradient(45deg, #2c3e50 30%, #26a69a 90%);
 }
 
 .search-methods-grid {
@@ -96,7 +96,7 @@
 }
 
 .react-datepicker__header {
-  background: #2196f3;
+  background: #2c3e50;
   border-bottom: none;
   border-radius: 8px 8px 0 0;
   padding-top: 12px;
@@ -112,7 +112,7 @@
 }
 
 .react-datepicker__day--selected {
-  background-color: #2196f3;
+  background-color: #26a69a;
   border-radius: 50%;
 }
 
@@ -154,8 +154,8 @@
 }
 
 .alert-info {
-  background-color: rgba(33, 150, 243, 0.05);
-  border-color: rgba(33, 150, 243, 0.1);
+  background-color: rgba(38, 166, 154, 0.05);
+  border-color: rgba(38, 166, 154, 0.1);
 }
 
 /* Custom scrollbar */
@@ -169,12 +169,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2196f3;
+  background: #26a69a;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1976d2;
+  background: #2c3e50;
 }
 
 /* Responsive adjustments */
@@ -194,11 +194,11 @@
 }
 
 .MuiInputLabel-root.Mui-focused {
-  color: #2196f3;
+  color: #26a69a;
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #2196f3;
+  border-color: #26a69a;
 }
 
 .MuiSelect-select {
@@ -235,5 +235,5 @@
 }
 
 .progress-line-active {
-  background: #2196f3;
+  background: #26a69a;
 }

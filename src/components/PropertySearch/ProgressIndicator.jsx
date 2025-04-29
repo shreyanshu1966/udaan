@@ -82,13 +82,13 @@ const ProgressIndicator = ({ activeStep, setActiveStep, isSectionComplete }) => 
                   justifyContent: 'center',
                   margin: '0 auto',
                   backgroundColor: step.number < activeStep ? '#4caf50' :
-                                 step.number === activeStep ? '#2196f3' : '#fff',
+                                 step.number === activeStep ? '#26a69a' : '#fff',
                   border: '2px solid',
                   borderColor: step.number <= activeStep ? 
-                             step.number === activeStep ? '#2196f3' : '#4caf50' : '#e0e0e0',
+                             step.number === activeStep ? '#26a69a' : '#4caf50' : '#e0e0e0',
                   color: step.number <= activeStep ? '#fff' : '#757575',
                   transition: 'all 0.3s ease',
-                  boxShadow: step.number === activeStep ? '0 0 0 4px rgba(33, 150, 243, 0.2)' : 'none',
+                  boxShadow: step.number === activeStep ? '0 0 0 4px rgba(38, 166, 154, 0.2)' : 'none',
                   fontSize: '1.2rem'
                 }}
               >
@@ -122,7 +122,7 @@ const ProgressIndicator = ({ activeStep, setActiveStep, isSectionComplete }) => 
                 style={{
                   width: '100%',
                   height: '2px',
-                  background: '#2196f3',
+                  background: '#26a69a',
                   position: 'absolute',
                   bottom: '-4px',
                   borderRadius: '2px'
