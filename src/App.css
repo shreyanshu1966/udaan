@@ -1,0 +1,134 @@
+/* General styling for the whole app */
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Form styling */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.card {
+  padding: 2em;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+}
+
+.card-header h4 {
+  font-size: 1.25rem;
+}
+
+.form-text {
+  font-size: 0.8rem;
+}
+
+/* Utility classes */
+.text-danger {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Date picker styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* Button styling */
+.btn {
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .row {
+    flex-direction: column;
+  }
+  
+  .col-md-4, .col-md-6, .col-md-12 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .d-flex.gap-4 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+  
+  .d-flex.justify-content-end {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.read-the-docs {
+  color: #888;
+}
