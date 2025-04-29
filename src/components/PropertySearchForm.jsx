@@ -16,6 +16,7 @@ const PropertySearchForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTooltip, setShowTooltip] = useState({});
   const [searchSuccess, setSearchSuccess] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
 
   // Toggle tooltip for specific fields
   const toggleTooltip = (fieldName) => {
@@ -94,9 +95,10 @@ const PropertySearchForm = () => {
       // Simulate API call
       setTimeout(() => {
         setIsSubmitting(false);
+        setSubmittedData(values); // Store the submitted values
         setSearchSuccess(true);
-        // Hide success message after 3 seconds
-        setTimeout(() => setSearchSuccess(false), 3000);
+        // Don't hide success message automatically
+        // setTimeout(() => setSearchSuccess(false), 3000);
       }, 1500);
     }
   });
@@ -1082,6 +1084,149 @@ const PropertySearchForm = () => {
               </div>
             </div>
           </form>
+
+          {/* Summary Display */}
+          {submittedData && searchSuccess && (
+            <div className="mt-4 animate__animated animate__fadeIn">
+              <div className="card border-success">
+                <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                  <h5 className="mb-0">Search Submitted Successfully</h5>
+                  <button 
+                    type="button" 
+                    className="btn-close btn-close-white" 
+                    onClick={() => {
+                      setSearchSuccess(false);
+                      setSubmittedData(null);
+                    }}
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <h6 className="border-bottom pb-2">Location Information</h6>
+                      <ul className="list-unstyled">
+                        <li><strong>State:</strong> {indianStates.find(s => s.value === submittedData.state)?.label || submittedData.state}</li>
+                        <li><strong>District:</strong> {submittedData.district}</li>
+                        <li><strong>Area Type:</strong> {submittedData.areaType === 'urban' ? 'Urban' : 'Rural'}</li>
+                        {submittedData.areaType === 'urban' && (
+                          <>
+                            <li><strong>City/Town:</strong> {submittedData.cityTown}</li>
+                            <li><strong>Locality:</strong> {submittedData.locality}</li>
+                          </>
+                        )}
+                        {submittedData.areaType === 'rural' && (
+                          <>
+                            <li><strong>Tehsil/Taluk:</strong> {submittedData.tehsil}</li>
+                            <li><strong>Village:</strong> {submittedData.village}</li>
+                          </>
+                        )}
+                        {submittedData.pinCode && <li><strong>Pin Code:</strong> {submittedData.pinCode}</li>}
+                      </ul>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <h6 className="border-bottom pb-2">Search Method & Details</h6>
+                      <ul className="list-unstyled">
+                        <li><strong>Search Method:</strong> {
+                          submittedData.searchMethod === 'propertyAddress' ? 'Property Address' :
+                          submittedData.searchMethod === 'ownerName' ? 'Owner/Party Name' :
+                          submittedData.searchMethod === 'propertyIdentifier' ? 'Property Identifier' :
+                          submittedData.searchMethod === 'registrationDetails' ? 'Registration Details' :
+                          submittedData.searchMethod === 'companyName' ? 'Company Name' : 
+                          submittedData.searchMethod
+                        }</li>
+                        
+                        {submittedData.searchMethod === 'propertyAddress' && (
+                          <>
+                            {submittedData.plotNumber && <li><strong>Plot/House Number:</strong> {submittedData.plotNumber}</li>}
+                            {submittedData.buildingName && <li><strong>Building Name:</strong> {submittedData.buildingName}</li>}
+                            {submittedData.streetName && <li><strong>Street Name:</strong> {submittedData.streetName}</li>}
+                          </>
+                        )}
+                        
+                        {submittedData.searchMethod === 'ownerName' && (
+                          <>
+                            <li><strong>Owner Name:</strong> {submittedData.ownerName}</li>
+                            {submittedData.fatherHusbandName && <li><strong>Father's/Husband's Name:</strong> {submittedData.fatherHusbandName}</li>}
+                          </>
+                        )}
+                        
+                        {submittedData.searchMethod === 'propertyIdentifier' && (
+                          <>
+                            <li><strong>Identifier Type:</strong> {submittedData.identifierType}</li>
+                            <li><strong>Identifier Value:</strong> {submittedData.identifierValue}</li>
+                          </>
+                        )}
+                        
+                        {submittedData.searchMethod === 'registrationDetails' && (
+                          <>
+                            <li><strong>SRO:</strong> {submittedData.sro}</li>
+                            <li><strong>Document Number:</strong> {submittedData.documentNumber}</li>
+                            <li><strong>Registration Year:</strong> {submittedData.registrationYear}</li>
+                          </>
+                        )}
+                        
+                        {submittedData.searchMethod === 'companyName' && (
+                          <>
+                            <li><strong>Company Name:</strong> {submittedData.companyName}</li>
+                            {submittedData.cinLlpin && <li><strong>CIN/LLPIN:</strong> {submittedData.cinLlpin}</li>}
+                          </>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="row">
+                    <div className="col-12">
+                      <h6 className="border-bottom pb-2">Filters Applied</h6>
+                      <ul className="list-unstyled">
+                        <li><strong>Property Type:</strong> {submittedData.propertyType}</li>
+                        {submittedData.registrationDateFrom && (
+                          <li>
+                            <strong>Registration Date Range:</strong> {
+                              `${submittedData.registrationDateFrom.toLocaleDateString()} to ${
+                                submittedData.registrationDateTo 
+                                  ? submittedData.registrationDateTo.toLocaleDateString() 
+                                  : 'Present'
+                              }`
+                            }
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="d-flex justify-content-between mt-3">
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-primary" 
+                      onClick={() => {
+                        setActiveStep(1);
+                        setSearchSuccess(false);
+                        setSubmittedData(null);
+                      }}
+                    >
+                      Start New Search
+                    </button>
+                    
+                    <button 
+                      type="button" 
+                      className="btn btn-primary" 
+                      onClick={() => {
+                        setSearchSuccess(false);
+                        setSubmittedData(null);
+                        // Here you would typically navigate to search results
+                        alert("In a real app, this would show your search results.");
+                      }}
+                    >
+                      View Search Results
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
