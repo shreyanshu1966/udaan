@@ -139,8 +139,8 @@ export const districtsByState = {
 
 // Sample data for urban areas - would be fetched from API in a real app
 export const urbanAreasByDistrict = {
+  'Pune': ['Pune', 'Aundh', 'Baner', 'Hadapsar', 'Kharadi', 'Koregaon Park', 'Kothrud', 'Shivaji Nagar', 'Viman Nagar', 'Wakad', 'Yerawada', 'Katraj', 'Sinhagad Road'],
   'Mumbai Suburban': ['Andheri', 'Bandra', 'Borivali', 'Chembur', 'Ghatkopar', 'Goregaon', 'Kandivali', 'Kurla', 'Malad', 'Mulund', 'Powai', 'Vikhroli'],
-  'Pune': ['Aundh', 'Baner', 'Hadapsar', 'Kharadi', 'Koregaon Park', 'Kothrud', 'Shivaji Nagar', 'Viman Nagar', 'Wakad', 'Yerawada', 'Katraj', 'Sinhagad Road'],
   'Chennai': ['Adyar', 'Anna Nagar', 'Chromepet', 'Guindy', 'Mylapore', 'Nungambakkam', 'Porur', 'T. Nagar', 'Velachery', 'Tambaram'],
   'Bengaluru': ['Whitefield', 'Koramangala', 'Indiranagar', 'Jayanagar', 'Malleshwaram'],
   'Hyderabad': ['Banjara Hills', 'Gachibowli', 'Madhapur', 'Secunderabad'],
