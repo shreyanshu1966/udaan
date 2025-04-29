@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import PropertySearchForm from './components/PropertySearchForm'
+import PropertySearchForm from './components/PropertySearch/PropertySearchForm'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
