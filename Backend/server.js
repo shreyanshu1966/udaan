@@ -6,7 +6,9 @@ const Doris = require('./models/Doris');
 const Dlr = require('./models/Dlr');
 const Cersai = require('./models/Cersai');
 const Mca21 = require('./models/Mca21');
+const UnifiedProperty = require('./models/UnifiedProperty');
 const { generatePropertyData } = require('./utils/dataGenerator');
+const { integratePropertyData } = require('./utils/dataIntegrator');
 
 const app = express();
 
@@ -93,7 +95,7 @@ app.get('/api/mca21', async (req, res) => {
   }
 });
 
-// Generate Property Data Route
+// Update the Generate Property Data Route
 app.post('/api/generate-property', async (req, res) => {
   try {
     const formData = req.body;
@@ -107,33 +109,105 @@ app.post('/api/generate-property', async (req, res) => {
     // Generate property data based on the form inputs
     const generatedData = generatePropertyData(formData);
     
-    // Optional: Save the generated data to database
     try {
-      // Create new records in the database if needed
+      // Create new records in the database
       const dorisRecord = new Doris(generatedData.doris);
       const dlrRecord = new Dlr(generatedData.dlr);
       const cersaiRecord = new Cersai(generatedData.cersai);
       const mca21Record = new Mca21(generatedData.mca21);
 
-      // Save records to database - comment this out if you don't want to save to DB
-      // await Promise.all([
-      //   dorisRecord.save(),
-      //   dlrRecord.save(),
-      //   cersaiRecord.save(), 
-      //   mca21Record.save()
-      // ]);
+      // Save all records to database (uncommented)
+      await Promise.all([
+        dorisRecord.save(),
+        dlrRecord.save(),
+        cersaiRecord.save(), 
+        mca21Record.save()
+      ]);
       
-      console.log('Generated property data with ID:', generatedData.propertyId);
+      // Generate and save unified data automatically
+      const unifiedData = await integratePropertyData(generatedData.propertyId);
+      console.log('Generated and saved unified property data with ID:', generatedData.propertyId);
+      
+      // Return complete data including the unified version
+      res.json({
+        ...generatedData,
+        unified: unifiedData
+      });
     } catch (dbError) {
-      console.error('Database error (continuing with response):', dbError);
-      // Continue even if DB saving fails - we'll still return the generated data
+      console.error('Database error:', dbError);
+      res.status(500).json({ error: dbError.message || 'Error saving property data' });
     }
-    
-    // Return the generated data
-    res.json(generatedData);
   } catch (error) {
     console.error('Error generating property data:', error);
     res.status(500).json({ error: error.message || 'Error generating property data' });
+  }
+});
+
+// Integrate and get unified property data
+app.get('/api/unified-property/:propertyId', async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    console.log(`Fetching unified data for propertyId: ${propertyId}`);
+    
+    // First try to get existing unified data
+    let unifiedData = await UnifiedProperty.findOne({ propertyId });
+    
+    // If not found, generate it
+    if (!unifiedData) {
+      console.log(`No existing unified data found for ${propertyId}, generating new...`);
+      unifiedData = await integratePropertyData(propertyId);
+    } else {
+      console.log(`Found existing unified data for ${propertyId}`);
+    }
+    
+    res.json(unifiedData);
+  } catch (error) {
+    console.error('Error retrieving unified property data:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get all unified property data
+app.get('/api/unified-properties', async (req, res) => {
+  try {
+    const unifiedData = await UnifiedProperty.find()
+      .limit(100)  // Limit to 100 records to avoid overwhelming responses
+      .sort({ updatedAt: -1 });  // Most recent first
+    
+    console.log(`Retrieved ${unifiedData.length} unified property records`);
+    res.json(unifiedData);
+  } catch (error) {
+    console.error('Error retrieving all unified properties:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Batch integrate properties (can be used for background processing)
+app.post('/api/integrate-properties', async (req, res) => {
+  try {
+    const { propertyIds } = req.body;
+    
+    if (!Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ error: 'Please provide an array of propertyIds' });
+    }
+    
+    const results = [];
+    const errors = [];
+    
+    // Process each propertyId
+    for (const propertyId of propertyIds) {
+      try {
+        const result = await integratePropertyData(propertyId);
+        results.push({ propertyId, success: true });
+      } catch (error) {
+        errors.push({ propertyId, error: error.message });
+      }
+    }
+    
+    res.json({ results, errors });
+  } catch (error) {
+    console.error('Error in batch integration:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
