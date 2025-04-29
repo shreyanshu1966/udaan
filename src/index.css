@@ -1,3 +1,7 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -30,4 +34,32 @@ body {
   #root {
     padding: 2rem;
   }
+}
+
+.hero-gradient {
+  background: linear-gradient(45deg, rgba(25, 118, 210, 0.95), rgba(33, 150, 243, 0.95));
+}
+
+.cta-gradient {
+  background: linear-gradient(45deg, #1976d2, #2196f3);
+}
+
+.feature-card {
+  @apply bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow;
+}
+
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
 }
