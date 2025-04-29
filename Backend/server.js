@@ -10,12 +10,16 @@ const UnifiedProperty = require('./models/UnifiedProperty');
 const { generatePropertyData } = require('./utils/dataGenerator');
 const { integratePropertyData } = require('./utils/dataIntegrator');
 const { mapSourceData } = require('./utils/dataMapper');
+const authRoutes = require('./routes/auth');
+const savedSearchesRoutes = require('./routes/savedSearches');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/saved-searches', savedSearchesRoutes);
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/udaan';

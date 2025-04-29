@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { indianStates } from '../../data/indianStates';
 import { formatDate } from './utils';
 import { generatePDF } from '../../utils/pdfGenerator';
@@ -6,9 +6,14 @@ import PdfLoadingOverlay from './PdfLoadingOverlay';
 import PdfTemplate from './PdfTemplate';
 import { analyzePropertyRisks, getOverallRiskLevel, RISK_LEVELS } from '../../utils/riskAnalysis';
 import { calculateInvestmentScore } from '../../utils/investmentScoring';
+import { AuthContext } from '../../context/AuthContext';
+import SaveSearchModal from './SaveSearchModal';
+import AmenitiesMap from './AmenitiesMap';
 
 const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, setActiveStep }) => {
   const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [saveSearchModalOpen, setSaveSearchModalOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const handleExportPDF = async () => {
     try {
@@ -246,6 +251,11 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
             <RiskAnalysisPanel propertyData={submittedData.generatedData} />
             <InvestmentScorePanel propertyData={submittedData.generatedData} />
             
+            {/* Update Amenities Map to use coordinates from user's pin */}
+            <AmenitiesMap 
+              propertyLocation={getPropertyCoordinates(submittedData)}
+            />
+
             <div className="d-flex justify-content-between mt-3">
               <div>
                 <button 
@@ -268,6 +278,15 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
                   <i className="bi bi-file-pdf me-1">📄</i>
                   Export to PDF
                 </button>
+
+                <button 
+                  type="button" 
+                  className="btn btn-outline-primary me-2" 
+                  onClick={() => user ? setSaveSearchModalOpen(true) : navigate('/login')}
+                >
+                  <i className="bi bi-bookmark me-1">🔖</i>
+                  Save Search
+                </button>
               </div>
               
               <button 
@@ -288,6 +307,14 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
       <div style={{ display: 'none' }}>
         <PdfTemplate data={submittedData.generatedData} />
       </div>
+
+      {user && (
+        <SaveSearchModal 
+          isOpen={saveSearchModalOpen} 
+          onClose={() => setSaveSearchModalOpen(false)}
+          searchData={submittedData}
+        />
+      )}
     </>
   );
 };
@@ -413,6 +440,34 @@ function getProgressColor(score) {
   if (score >= 60) return '#ffc107';
   if (score >= 50) return '#ff9800';
   return '#f44336';
+}
+
+// Helper function to get property coordinates
+function getPropertyCoordinates(submittedData) {
+  // First priority: Use pinpointed map coordinates if available
+  if (submittedData.mapCoordinates && submittedData.mapCoordinates.lat && submittedData.mapCoordinates.lng) {
+    return {
+      lat: submittedData.mapCoordinates.lat,
+      lng: submittedData.mapCoordinates.lng,
+      isPinpointed: true
+    };
+  }
+  
+  // Second priority: Use generated DORIS data coordinates
+  if (submittedData.generatedData?.doris?.latitude && submittedData.generatedData?.doris?.longitude) {
+    return {
+      lat: submittedData.generatedData.doris.latitude,
+      lng: submittedData.generatedData.doris.longitude,
+      isPinpointed: false
+    };
+  }
+  
+  // Fallback: Use center of India
+  return {
+    lat: 20.5937,
+    lng: 78.9629,
+    isPinpointed: false
+  };
 }
 
 export default ResultsSummary;

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
@@ -38,19 +40,35 @@ const Navbar = () => {
           </div>
 
           {/* Call to action buttons */}
-          <div className="hidden md:block">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => navigate('/login')}>
-                Login
-              </Button>
-              <Button
-                onClick={() => navigate('/signup')}
-                className="bg-primary hover:bg-primary/90 text-white"
-              >
-                Sign up
-              </Button>
+          {!user ? (
+            <div className="hidden md:block">
+              <div className="flex items-center space-x-4">
+                <Button variant="ghost" onClick={() => navigate('/login')}>
+                  Login
+                </Button>
+                <Button
+                  onClick={() => navigate('/register')}
+                  className="bg-primary hover:bg-primary/90 text-white"
+                >
+                  Sign up
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="hidden md:block">
+              <div className="flex items-center space-x-4">
+                <Button variant="ghost" onClick={() => navigate('/dashboard')}>
+                  My Dashboard
+                </Button>
+                <Button
+                  onClick={logout}
+                  className="bg-primary hover:bg-primary/90 text-white"
+                >
+                  Logout
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden">

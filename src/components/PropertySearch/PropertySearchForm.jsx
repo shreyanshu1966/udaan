@@ -21,6 +21,7 @@ import FiltersStep from './FiltersStep';
 import ResultsSummary from './ResultsSummary';
 import ProgressIndicator from './ProgressIndicator';
 import { isSectionComplete } from './utils';
+import { useLocation } from 'react-router-dom';
 
 // Create custom theme
 const theme = createTheme({
@@ -47,6 +48,9 @@ const backgroundStyle = {
 };
 
 const PropertySearchForm = () => {
+  const location = useLocation();
+  const savedSearchParams = location.state?.savedSearchParams;
+
   // State for controlling conditional form fields and UI elements
   const [selectedDistricts, setSelectedDistricts] = useState([]);
   const [selectedTehsils, setSelectedTehsils] = useState([]);
@@ -102,7 +106,7 @@ const PropertySearchForm = () => {
 
   // Initialize formik
   const formik = useFormik({
-    initialValues: {
+    initialValues: savedSearchParams || {
       state: '',
       district: '',
       areaType: '',
@@ -126,7 +130,8 @@ const PropertySearchForm = () => {
       cinLlpin: '',
       propertyType: 'Any',
       registrationDateFrom: null,
-      registrationDateTo: null
+      registrationDateTo: null,
+      mapCoordinates: null,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -208,6 +213,37 @@ const PropertySearchForm = () => {
     }
   }, [formik.values.district, formik.values.areaType]);
 
+  useEffect(() => {
+    if (savedSearchParams) {
+      // Set UI states based on the saved search
+      if (savedSearchParams.state) {
+        const districts = districtsByState[savedSearchParams.state] || [];
+        setSelectedDistricts(districts);
+      }
+      
+      if (savedSearchParams.district && savedSearchParams.areaType === 'urban') {
+        const urbanAreas = urbanAreasByDistrict[savedSearchParams.district] || [];
+        setSelectedUrbanAreas(urbanAreas);
+      }
+      
+      if (savedSearchParams.district && savedSearchParams.areaType === 'rural') {
+        const tehsils = tehsilsByDistrict[savedSearchParams.district] || [];
+        setSelectedTehsils(tehsils);
+      }
+      
+      // If it's a saved search from dashboard (complete search), run it immediately
+      if (location.state?.fromDashboard && isSectionComplete(4, savedSearchParams)) {
+        // Set to last step to show we're on the final stage
+        setActiveStep(4);
+        
+        // Run the search immediately 
+        (async () => {
+          await handleFormSubmit(savedSearchParams);
+        })();
+      }
+    }
+  }, [savedSearchParams, location.state]);
+
   // Helper function to check if we can proceed to next step
   const canProceedToNextStep = () => {
     return isSectionComplete(activeStep, formik.values);
@@ -237,6 +273,34 @@ const PropertySearchForm = () => {
     setSelectedUrbanAreas([]);
     setSelectedTehsils([]);
     setActiveStep(1);
+  };
+
+  const handleFormSubmit = async (values) => {
+    setIsSubmitting(true);
+    setErrorMessage(null);
+    
+    try {
+      // Call the backend API to generate data
+      const response = await axios.post('http://localhost:5000/api/generate-property', values);
+      console.log('Generated data from backend:', response.data);
+      
+      setIsSubmitting(false);
+      setSubmittedData({
+        ...values,
+        generatedData: response.data
+      });
+      setSearchSuccess(true);
+    } catch (error) {
+      console.error('Error generating property data:', error);
+      setIsSubmitting(false);
+      
+      // Show a more specific error message
+      if (error.response && error.response.data && error.response.data.error) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage('Error generating property data. Please try again.');
+      }
+    }
   };
 
   return (

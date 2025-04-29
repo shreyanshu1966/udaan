@@ -47,11 +47,15 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
   const handleMapClick = useCallback((event) => {
     const lat = event.latlng.lat;
     const lng = event.latlng.lng;
+    
     setSelectedLocation({ lat, lng });
+    
+    // Save coordinates to form data
+    formik.setFieldValue('mapCoordinates', { lat, lng });
     
     // Perform reverse geocoding
     reverseGeocode(lat, lng);
-  }, []);
+  }, [formik]);
   
   // Reverse geocoding to get address from coordinates using OpenStreetMap Nominatim
   const reverseGeocode = async (lat, lng) => {
