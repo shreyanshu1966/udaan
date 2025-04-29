@@ -1,337 +1,305 @@
 import React from 'react';
 import { identifierTypes } from '../../data/indianStates';
 import { generateYearOptions } from './utils';
+import { motion } from 'framer-motion';
+import { Box, Paper, Typography, TextField, Select, MenuItem, FormControl, InputLabel, Alert } from '@mui/material';
+import { FaMapMarked, FaUserAlt, FaIdCard, FaFileAlt, FaBuilding } from 'react-icons/fa';
 
 const SearchDetailsStep = ({ formik }) => {
+  const getStepIcon = (searchMethod) => {
+    switch (searchMethod) {
+      case 'propertyAddress': return <FaMapMarked />;
+      case 'ownerName': return <FaUserAlt />;
+      case 'propertyIdentifier': return <FaIdCard />;
+      case 'registrationDetails': return <FaFileAlt />;
+      case 'companyName': return <FaBuilding />;
+      default: return null;
+    }
+  };
+
+  const getStepTitle = (searchMethod) => {
+    switch (searchMethod) {
+      case 'propertyAddress': return 'Property Address Details';
+      case 'ownerName': return 'Owner / Party Name Details';
+      case 'propertyIdentifier': return 'Property Identifier Details';
+      case 'registrationDetails': return 'Registration Document Details';
+      case 'companyName': return 'Company Information';
+      default: return '';
+    }
+  };
+
   return (
-    <div className="step-container">
-      <div className="card mb-4 border-primary">
-        <div className="card-header bg-primary bg-opacity-10 text-primary">
-          <h4 className="mb-0">Step 3: Provide Search Details</h4>
-          <p className="mb-0 small">Fill in the specific information for your search</p>
-        </div>
-        <div className="card-body">
-          {/* Property Address Details */}
-          {formik.values.searchMethod === 'propertyAddress' && (
-            <div className="animate__animated animate__fadeIn">
-              <div className="alert alert-light border mb-3">
-                <div className="d-flex">
-                  <div className="me-3 text-primary">
-                    <i className="bi bi-info-circle fs-4">📍</i>
-                  </div>
-                  <div>
-                    <p className="mb-1">You're searching by <strong>Property Address</strong>.</p>
-                    <p className="mb-0 small">Enter as many details as possible for better results.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row mb-3">
-                <div className="col-md-4 mb-3 mb-md-0">
-                  <label htmlFor="plotNumber" className="form-label">
-                    Plot / House / Flat Number
-                  </label>
-                  <input
-                    id="plotNumber"
-                    name="plotNumber"
-                    type="text"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.plotNumber}
-                    placeholder="E.g., 42, Flat 301, etc."
-                  />
-                  <div className="form-text">Recommended for better results</div>
-                </div>
-                <div className="col-md-4 mb-3 mb-md-0">
-                  <label htmlFor="buildingName" className="form-label">
-                    Building / Apartment Name
-                  </label>
-                  <input
-                    id="buildingName"
-                    name="buildingName"
-                    type="text"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.buildingName}
-                    placeholder="E.g., Sunshine Towers"
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="streetName" className="form-label">
-                    Street / Road Name
-                  </label>
-                  <input
-                    id="streetName"
-                    name="streetName"
-                    type="text"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.streetName}
-                    placeholder="E.g., Gandhi Road"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Owner / Party Name */}
-          {formik.values.searchMethod === 'ownerName' && (
-            <div className="animate__animated animate__fadeIn">
-              <div className="alert alert-light border mb-3">
-                <div className="d-flex">
-                  <div className="me-3 text-primary">
-                    <i className="bi bi-info-circle fs-4">👤</i>
-                  </div>
-                  <div>
-                    <p className="mb-1">You're searching by <strong>Owner Name</strong>.</p>
-                    <p className="mb-0 small">Enter the full name exactly as it appears in property records.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row mb-3">
-                <div className="col-md-6 mb-3 mb-md-0">
-                  <label htmlFor="ownerName" className="form-label">
-                    Full Name of Owner / Party *
-                  </label>
-                  <input
-                    id="ownerName"
-                    name="ownerName"
-                    type="text"
-                    className={`form-control ${formik.touched.ownerName && formik.errors.ownerName ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.ownerName}
-                    placeholder="Enter full name as in documents"
-                  />
-                  {formik.touched.ownerName && formik.errors.ownerName && (
-                    <div className="invalid-feedback">{formik.errors.ownerName}</div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="step-container"
+    >
+      <Paper elevation={2} className="p-4 mb-4">
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" sx={{ color: 'primary.main', mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+            {getStepIcon(formik.values.searchMethod)}
+            {getStepTitle(formik.values.searchMethod)}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Please provide the specific details for your selected search method
+          </Typography>
+        </Box>
+
+        {/* Property Address Form Fields */}
+        {formik.values.searchMethod === 'propertyAddress' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              Enter as many details as possible for better results
+            </Alert>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 1fr' }, gap: 3 }}>
+              <TextField
+                fullWidth
+                label="Plot / House / Flat Number"
+                id="plotNumber"
+                name="plotNumber"
+                value={formik.values.plotNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="E.g., 42, Flat 301, etc."
+                helperText="Recommended for better results"
+              />
+
+              <TextField
+                fullWidth
+                label="Building / Apartment Name"
+                id="buildingName"
+                name="buildingName"
+                value={formik.values.buildingName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="E.g., Sunshine Towers"
+              />
+
+              <TextField
+                fullWidth
+                label="Street / Road Name"
+                id="streetName"
+                name="streetName"
+                value={formik.values.streetName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="E.g., Gandhi Road"
+              />
+            </Box>
+          </motion.div>
+        )}
+
+        {/* Owner Name Form Fields */}
+        {formik.values.searchMethod === 'ownerName' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              Enter the full name exactly as it appears in property records
+            </Alert>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+              <TextField
+                required
+                fullWidth
+                label="Full Name of Owner / Party"
+                id="ownerName"
+                name="ownerName"
+                value={formik.values.ownerName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.ownerName && Boolean(formik.errors.ownerName)}
+                helperText={formik.touched.ownerName && formik.errors.ownerName}
+                placeholder="Enter full name as in documents"
+              />
+
+              <TextField
+                fullWidth
+                label="Father's / Husband's Name"
+                id="fatherHusbandName"
+                name="fatherHusbandName"
+                value={formik.values.fatherHusbandName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Helps distinguish common names"
+                helperText="Optional"
+              />
+            </Box>
+          </motion.div>
+        )}
+
+        {/* Property Identifier Form Fields */}
+        {formik.values.searchMethod === 'propertyIdentifier' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              Select the type of identifier and enter its value exactly as it appears in documents
+            </Alert>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+              <FormControl fullWidth>
+                <InputLabel id="identifierType-label">Identifier Type *</InputLabel>
+                <Select
+                  labelId="identifierType-label"
+                  id="identifierType"
+                  name="identifierType"
+                  value={formik.values.identifierType}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.identifierType && Boolean(formik.errors.identifierType)}
+                  label="Identifier Type *"
+                >
+                  <MenuItem value="">Select Identifier Type</MenuItem>
+                  {identifierTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <TextField
+                required
+                fullWidth
+                label="Identifier Value"
+                id="identifierValue"
+                name="identifierValue"
+                value={formik.values.identifierValue}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.identifierValue && Boolean(formik.errors.identifierValue)}
+                helperText={formik.touched.identifierValue && formik.errors.identifierValue}
+                placeholder="Enter the exact value"
+              />
+            </Box>
+          </motion.div>
+        )}
+
+        {/* Registration Details Form Fields */}
+        {formik.values.searchMethod === 'registrationDetails' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              Enter the document number and Sub-Registrar Office where it was registered
+            </Alert>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 1fr' }, gap: 3 }}>
+              <FormControl fullWidth>
+                <InputLabel id="sro-label">Sub-Registrar Office (SRO) *</InputLabel>
+                <Select
+                  labelId="sro-label"
+                  id="sro"
+                  name="sro"
+                  value={formik.values.sro}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.sro && Boolean(formik.errors.sro)}
+                  label="Sub-Registrar Office (SRO) *"
+                >
+                  <MenuItem value="">Select SRO</MenuItem>
+                  {formik.values.district && (
+                    <MenuItem value={`SRO-${formik.values.district}`}>
+                      SRO-{formik.values.district}
+                    </MenuItem>
                   )}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="fatherHusbandName" className="form-label">
-                    Father's / Husband's Name <span className="text-muted">(Optional)</span>
-                  </label>
-                  <input
-                    id="fatherHusbandName"
-                    name="fatherHusbandName"
-                    type="text"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.fatherHusbandName}
-                    placeholder="Helps distinguish common names"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Property Identifier */}
-          {formik.values.searchMethod === 'propertyIdentifier' && (
-            <div className="animate__animated animate__fadeIn">
-              <div className="alert alert-light border mb-3">
-                <div className="d-flex">
-                  <div className="me-3 text-primary">
-                    <i className="bi bi-info-circle fs-4">🏷️</i>
-                  </div>
-                  <div>
-                    <p className="mb-1">You're searching by <strong>Property Identifier</strong>.</p>
-                    <p className="mb-0 small">Select the type of identifier and enter its value exactly as it appears in documents.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row mb-3">
-                <div className="col-md-6 mb-3 mb-md-0">
-                  <label htmlFor="identifierType" className="form-label">
-                    Identifier Type *
-                  </label>
-                  <select
-                    id="identifierType"
-                    name="identifierType"
-                    className={`form-select ${formik.touched.identifierType && formik.errors.identifierType ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.identifierType}
-                  >
-                    <option value="">Select Identifier Type</option>
-                    {identifierTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.touched.identifierType && formik.errors.identifierType && (
-                    <div className="invalid-feedback">{formik.errors.identifierType}</div>
-                  )}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="identifierValue" className="form-label">
-                    Identifier Value *
-                  </label>
-                  <input
-                    id="identifierValue"
-                    name="identifierValue"
-                    type="text"
-                    className={`form-control ${formik.touched.identifierValue && formik.errors.identifierValue ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.identifierValue}
-                    placeholder="Enter the exact value"
-                  />
-                  {formik.touched.identifierValue && formik.errors.identifierValue && (
-                    <div className="invalid-feedback">{formik.errors.identifierValue}</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Registration Details */}
-          {formik.values.searchMethod === 'registrationDetails' && (
-            <div className="animate__animated animate__fadeIn">
-              <div className="alert alert-light border mb-3">
-                <div className="d-flex">
-                  <div className="me-3 text-primary">
-                    <i className="bi bi-info-circle fs-4">📄</i>
-                  </div>
-                  <div>
-                    <p className="mb-1">You're searching by <strong>Registration Details</strong>.</p>
-                    <p className="mb-0 small">Enter the document number and Sub-Registrar Office where it was registered.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row mb-3">
-                <div className="col-md-4 mb-3 mb-md-0">
-                  <label htmlFor="sro" className="form-label">
-                    Sub-Registrar Office (SRO) *
-                  </label>
-                  <select
-                    id="sro"
-                    name="sro"
-                    className={`form-select ${formik.touched.sro && formik.errors.sro ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.sro}
-                  >
-                    <option value="">Select SRO</option>
-                    {formik.values.district && (
-                      <option value={`SRO-${formik.values.district}`}>
-                        SRO-{formik.values.district}
-                      </option>
-                    )}
-                  </select>
-                  {formik.touched.sro && formik.errors.sro && (
-                    <div className="invalid-feedback">{formik.errors.sro}</div>
-                  )}
-                </div>
-                <div className="col-md-4 mb-3 mb-md-0">
-                  <label htmlFor="documentNumber" className="form-label">
-                    Document / Deed Number *
-                  </label>
-                  <input
-                    id="documentNumber"
-                    name="documentNumber"
-                    type="text"
-                    className={`form-control ${formik.touched.documentNumber && formik.errors.documentNumber ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.documentNumber}
-                    placeholder="E.g., 1234/2024"
-                  />
-                  {formik.touched.documentNumber && formik.errors.documentNumber && (
-                    <div className="invalid-feedback">{formik.errors.documentNumber}</div>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="registrationYear" className="form-label">
-                    Year of Registration *
-                  </label>
-                  <select
-                    id="registrationYear"
-                    name="registrationYear"
-                    className={`form-select ${formik.touched.registrationYear && formik.errors.registrationYear ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.registrationYear}
-                  >
-                    <option value="">Select Year</option>
-                    {generateYearOptions().map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.touched.registrationYear && formik.errors.registrationYear && (
-                    <div className="invalid-feedback">{formik.errors.registrationYear}</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Linked Company Name */}
-          {formik.values.searchMethod === 'companyName' && (
-            <div className="animate__animated animate__fadeIn">
-              <div className="alert alert-light border mb-3">
-                <div className="d-flex">
-                  <div className="me-3 text-primary">
-                    <i className="bi bi-info-circle fs-4">🏢</i>
-                  </div>
-                  <div>
-                    <p className="mb-1">You're searching by <strong>Company Name</strong>.</p>
-                    <p className="mb-0 small">Enter the exact company name. Adding the CIN/LLPIN will improve accuracy.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row mb-3">
-                <div className="col-md-6 mb-3 mb-md-0">
-                  <label htmlFor="companyName" className="form-label">
-                    Company Name *
-                  </label>
-                  <input
-                    id="companyName"
-                    name="companyName"
-                    type="text"
-                    className={`form-control ${formik.touched.companyName && formik.errors.companyName ? 'is-invalid' : ''}`}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.companyName}
-                    placeholder="Enter full registered company name"
-                  />
-                  {formik.touched.companyName && formik.errors.companyName && (
-                    <div className="invalid-feedback">{formik.errors.companyName}</div>
-                  )}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="cinLlpin" className="form-label">
-                    CIN / LLPIN <span className="text-muted">(Recommended)</span>
-                  </label>
-                  <input
-                    id="cinLlpin"
-                    name="cinLlpin"
-                    type="text"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.cinLlpin}
-                    maxLength={21}
-                    placeholder="E.g., U74999MH2018PTC123456"
-                  />
-                  <div className="form-text">Entering the company ID improves search accuracy</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+                </Select>
+              </FormControl>
+
+              <TextField
+                required
+                fullWidth
+                label="Document / Deed Number"
+                id="documentNumber"
+                name="documentNumber"
+                value={formik.values.documentNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.documentNumber && Boolean(formik.errors.documentNumber)}
+                helperText={formik.touched.documentNumber && formik.errors.documentNumber}
+                placeholder="E.g., 1234/2024"
+              />
+
+              <FormControl fullWidth>
+                <InputLabel id="registrationYear-label">Year of Registration *</InputLabel>
+                <Select
+                  labelId="registrationYear-label"
+                  id="registrationYear"
+                  name="registrationYear"
+                  value={formik.values.registrationYear}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.registrationYear && Boolean(formik.errors.registrationYear)}
+                  label="Year of Registration *"
+                >
+                  <MenuItem value="">Select Year</MenuItem>
+                  {generateYearOptions().map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </motion.div>
+        )}
+
+        {/* Company Name Form Fields */}
+        {formik.values.searchMethod === 'companyName' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              Enter the exact company name. Adding the CIN/LLPIN will improve accuracy.
+            </Alert>
+
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+              <TextField
+                required
+                fullWidth
+                label="Company Name"
+                id="companyName"
+                name="companyName"
+                value={formik.values.companyName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.companyName && Boolean(formik.errors.companyName)}
+                helperText={formik.touched.companyName && formik.errors.companyName}
+                placeholder="Enter full registered company name"
+              />
+
+              <TextField
+                fullWidth
+                label="CIN / LLPIN"
+                id="cinLlpin"
+                name="cinLlpin"
+                value={formik.values.cinLlpin}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="E.g., U74999MH2018PTC123456"
+                helperText="Recommended for better accuracy"
+                inputProps={{ maxLength: 21 }}
+              />
+            </Box>
+          </motion.div>
+        )}
+      </Paper>
+    </motion.div>
   );
 };
 
