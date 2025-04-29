@@ -43,7 +43,7 @@ const backgroundStyle = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   minHeight: '100vh',
-  padding: '2rem 0',
+  padding: '1rem 0', // Decreased from 2rem to 1rem
 };
 
 const PropertySearchForm = () => {
@@ -244,7 +244,13 @@ const PropertySearchForm = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar /> {/* Add Navbar */}
         <Box sx={backgroundStyle} className="flex-grow">
-          <Container maxWidth="lg">
+          <Container 
+            maxWidth={false} // Changed from "lg" to false
+            sx={{ 
+              maxWidth: '1400px !important', // Increased max width
+              mt: 2 // Added top margin
+            }}
+          >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -262,7 +268,7 @@ const PropertySearchForm = () => {
                 <Box 
                   sx={{ 
                     background: 'linear-gradient(45deg, #2c3e50 30%, #26a69a 90%)',
-                    padding: 3,
+                    padding: 2, // Decreased from 3 to 2
                     color: 'white',
                   }}
                 >
@@ -298,7 +304,7 @@ const PropertySearchForm = () => {
                 </Box>
 
                 {/* Progress Bar */}
-                <Box sx={{ px: 3, pt: 3 }}>
+                <Box sx={{ px: 2, pt: 2 }}> {/* Decreased padding */}
                   <ProgressIndicator 
                     activeStep={activeStep} 
                     setActiveStep={setActiveStep} 
@@ -307,7 +313,7 @@ const PropertySearchForm = () => {
                 </Box>
 
                 {/* Form Content */}
-                <Box sx={{ p: 3 }}>
+                <Box sx={{ p: 2 }}> {/* Decreased from p: 3 to p: 2 */}
                   {isSubmitting && (
                     <LinearProgress 
                       sx={{ 
