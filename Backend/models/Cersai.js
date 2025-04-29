@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const cersaiSchema = new mongoose.Schema({
+  propertyId: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true
+  },
   isMortgaged: {
     type: Boolean,
     required: true,
@@ -73,6 +79,7 @@ const cersaiSchema = new mongoose.Schema({
 });
 
 // Create indexes for frequently queried fields
+cersaiSchema.index({ propertyId: 1 });
 cersaiSchema.index({ loanAccountNumber: 1 });
 cersaiSchema.index({ chargeID: 1 });
 cersaiSchema.index({ bankName: 1, branchName: 1 });

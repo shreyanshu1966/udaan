@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const dlrSchema = new mongoose.Schema({
+  propertyId: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true
+  },
   khasraNumber: {
     type: String,
     required: true,
@@ -80,6 +86,7 @@ const dlrSchema = new mongoose.Schema({
 });
 
 // Create indexes for frequently queried fields
+dlrSchema.index({ propertyId: 1 });
 dlrSchema.index({ khasraNumber: 1 });
 dlrSchema.index({ khataNumber: 1 });
 dlrSchema.index({ district: 1, tehsil: 1, village: 1 });

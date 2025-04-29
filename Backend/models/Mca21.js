@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const mca21Schema = new mongoose.Schema({
+  propertyId: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true
+  },
   companyName: {
     type: String,
     required: true,
@@ -79,6 +85,7 @@ const mca21Schema = new mongoose.Schema({
 });
 
 // Create indexes for frequently queried fields
+mca21Schema.index({ propertyId: 1 });
 mca21Schema.index({ companyCIN: 1 });
 mca21Schema.index({ companyPAN: 1 });
 mca21Schema.index({ directorDIN: 1 });

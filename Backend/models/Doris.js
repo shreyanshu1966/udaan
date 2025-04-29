@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const dorisSchema = new mongoose.Schema({
+  propertyId: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true
+  },
   ownerName: {
     type: String,
     required: true,
@@ -93,6 +99,7 @@ const dorisSchema = new mongoose.Schema({
 });
 
 // Create indexes for frequently queried fields
+dorisSchema.index({ propertyId: 1 });
 dorisSchema.index({ propertyID: 1 });
 dorisSchema.index({ aadhaarNumber: 1 });
 dorisSchema.index({ documentNumber: 1 });

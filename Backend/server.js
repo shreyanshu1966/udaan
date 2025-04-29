@@ -24,6 +24,34 @@ mongoose.connect(MONGODB_URI)
     console.error('MongoDB connection error:', error);
   });
 
+// Combined Property Data Route
+app.get('/api/property/:propertyId', async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    
+    // Fetch data from all collections
+    const [dorisData, dlrData, cersaiData, mca21Data] = await Promise.all([
+      Doris.findOne({ propertyId }),
+      Dlr.findOne({ propertyId }),
+      Cersai.findOne({ propertyId }),
+      Mca21.findOne({ propertyId })
+    ]);
+
+    // Combine the data
+    const combinedData = {
+      propertyId,
+      doris: dorisData || null,
+      dlr: dlrData || null,
+      cersai: cersaiData || null,
+      mca21: mca21Data || null
+    };
+
+    res.json(combinedData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // DORIS Routes
 app.get('/api/doris', async (req, res) => {
   try {
