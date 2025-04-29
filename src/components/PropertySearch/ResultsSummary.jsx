@@ -3,6 +3,7 @@ import { indianStates } from '../../data/indianStates';
 import { formatDate } from './utils';
 import { generatePDF } from '../../utils/pdfGenerator';
 import PdfLoadingOverlay from './PdfLoadingOverlay';
+import PdfTemplate from './PdfTemplate';
 
 const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, setActiveStep }) => {
   const [isPdfLoading, setIsPdfLoading] = useState(false);
@@ -10,7 +11,10 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
   const handleExportPDF = async () => {
     try {
       setIsPdfLoading(true);
-      await generatePDF('searchResults', `property-search-${submittedData.generatedData?.doris?.propertyID || 'result'}.pdf`);
+      await generatePDF(
+        'pdfTemplate', 
+        `OMNIPROP-${submittedData.generatedData?.propertyID || 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
+      );
     } finally {
       setIsPdfLoading(false);
     }
@@ -273,6 +277,11 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Hidden PDF template */}
+      <div style={{ display: 'none' }}>
+        <PdfTemplate data={submittedData.generatedData} />
       </div>
     </>
   );

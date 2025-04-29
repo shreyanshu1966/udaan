@@ -19,7 +19,7 @@ const Navbar = () => {
               alt="Ominiprop Logo"
               className="h-10 w-10 mr-3" // Adjust size and spacing
             />
-            <span className="text-primary text-xl font-bold">Ominiprop</span>
+            <span className="text-primary text-xl font-bold">OMNIPROP</span>
           </div>
 
           {/* Desktop Navigation */}
