@@ -57,6 +57,7 @@ const PropertySearchForm = () => {
   const [showTooltip, setShowTooltip] = useState({});
   const [searchSuccess, setSearchSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Toggle tooltip for specific fields
   const toggleTooltip = (fieldName) => {
@@ -130,6 +131,7 @@ const PropertySearchForm = () => {
     validationSchema,
     onSubmit: async (values) => {
       setIsSubmitting(true);
+      setErrorMessage(null);
       console.log('Form submitted with values:', values);
       
       try {
@@ -146,7 +148,13 @@ const PropertySearchForm = () => {
       } catch (error) {
         console.error('Error generating property data:', error);
         setIsSubmitting(false);
-        alert('Error generating property data. Please try again.');
+        
+        // Show a more specific error message
+        if (error.response && error.response.data && error.response.data.error) {
+          setErrorMessage(error.response.data.error);
+        } else {
+          setErrorMessage('Error generating property data. Please try again.');
+        }
       }
     }
   });
@@ -319,6 +327,18 @@ const PropertySearchForm = () => {
                         <FaMapMarkerAlt className="me-2" />
                         <strong>Success!</strong> Your property search has been submitted.
                         <button type="button" className="btn-close" onClick={() => setSearchSuccess(false)}></button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {errorMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {errorMessage}
+                        <button type="button" className="btn-close" onClick={() => setErrorMessage(null)}></button>
                       </div>
                     </motion.div>
                   )}

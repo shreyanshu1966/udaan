@@ -31,7 +31,8 @@ const generateDorisData = (formData) => {
   if (formData.documentNumber && formData.registrationYear) {
     documentNumber = `${formData.documentNumber}/${formData.registrationYear}`;
   } else {
-    documentNumber = `DOC-${getRandomNumber(1000, 9999)}/${new Date().getFullYear()}`;
+    // Add timestamp to make unique
+    documentNumber = `DOC-${getRandomNumber(1000, 9999)}-${Date.now()}/${new Date().getFullYear()}`;
   }
   
   // SRO from form data or generate based on district
@@ -115,6 +116,16 @@ const generateCersaiData = (formData) => {
   const loanAmount = getRandomNumber(1000000, 10000000);
   const isMortgaged = getRandomBoolean();
   
+  // Generate a unique document number for CERSAI
+  let documentNumber;
+  if (formData.documentNumber && formData.registrationYear) {
+    // Use the document number from the form if available
+    documentNumber = `${formData.documentNumber}/${formData.registrationYear}`;
+  } else {
+    // Add timestamp to make unique
+    documentNumber = `CERSAI-${getRandomNumber(1000, 9999)}-${Date.now()}/${new Date().getFullYear()}`;
+  }
+  
   return {
     propertyId: `PROP-${generateRandomId()}`,
     isMortgaged: isMortgaged,
@@ -122,15 +133,19 @@ const generateCersaiData = (formData) => {
     branchName: isMortgaged ? `${getRandomItem(branches)}, ${formData.district || 'Mumbai'}` : 'N/A',
     loanAmount: isMortgaged ? `₹ ${loanAmount.toLocaleString('en-IN')}` : '₹ 0',
     loanType: isMortgaged ? getRandomItem(loanTypes) : 'N/A',
-    loanAccountNumber: isMortgaged ? `LOAN-${getRandomNumber(10000, 99999)}` : 'N/A',
+    loanAccountNumber: isMortgaged ? `LOAN-${getRandomNumber(10000, 99999)}-${Date.now()}` : null, // Use null instead of "N/A"
     loanStartDate: isMortgaged ? getRandomDate(new Date(2015, 0, 1)) : 'N/A',
     loanEndDate: isMortgaged ? getRandomDate(new Date(2025, 0, 1), new Date(2040, 0, 1)) : 'N/A',
     encumbranceType: isMortgaged ? getRandomItem(encumbranceTypes) : 'None',
     encumbranceDate: isMortgaged ? getRandomDate(new Date(2015, 0, 1)) : 'N/A',
     remarks: isMortgaged ? 'Active loan account' : 'No encumbrance found',
     lienHolderName: isMortgaged ? selectedBank : 'None',
-    chargeID: isMortgaged ? `CHG-${getRandomNumber(100000, 999999)}` : 'N/A',
-    cersaiRegistrationDate: isMortgaged ? getRandomDate(new Date(2015, 0, 1)) : 'N/A'
+    // Fix: Instead of null, provide a unique string value for non-mortgaged properties
+    chargeID: isMortgaged 
+      ? `CHG-${getRandomNumber(100000, 999999)}-${Date.now()}` 
+      : `NO-CHARGE-${Date.now()}-${getRandomNumber(1000, 9999)}`,
+    cersaiRegistrationDate: isMortgaged ? getRandomDate(new Date(2015, 0, 1)) : 'N/A',
+    documentNumber: documentNumber
   };
 };
 

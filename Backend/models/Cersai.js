@@ -34,9 +34,13 @@ const cersaiSchema = new mongoose.Schema({
   },
   loanAccountNumber: {
     type: String,
-    required: true,
+    required: function() {
+      return this.isMortgaged === true;
+    },
     trim: true,
-    unique: true
+    // Remove unique constraint or add composite index instead
+    // unique: true,
+    sparse: true  // This is important - only enforces uniqueness on non-null values
   },
   loanStartDate: {
     type: String,
@@ -73,6 +77,13 @@ const cersaiSchema = new mongoose.Schema({
   cersaiRegistrationDate: {
     type: String,
     required: true
+  },
+  documentNumber: {
+    type: String,
+    required: true,
+    // Remove unique constraint or add composite index with another field
+    // unique: true,
+    trim: true
   }
 }, {
   timestamps: true
@@ -86,4 +97,4 @@ cersaiSchema.index({ bankName: 1, branchName: 1 });
 
 const Cersai = mongoose.model('Cersai', cersaiSchema);
 
-module.exports = Cersai; 
+module.exports = Cersai;
