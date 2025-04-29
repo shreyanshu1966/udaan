@@ -4,15 +4,7 @@ import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { 
-  indianStates, 
-  districtsByState, 
-  urbanAreasByDistrict, 
-  tehsilsByDistrict,
-  villagesByTehsil,
-  identifierTypes,
-  propertyTypes
-} from '../data/indianStates';
+import { indianStates, districtsByState,urbanAreasByDistrict,tehsilsByDistrict,villagesByTehsil,identifierTypes,propertyTypes} from '../data/indianStates';
 
 const PropertySearchForm = () => {
   // State for controlling conditional form fields and UI elements
@@ -128,7 +120,35 @@ const PropertySearchForm = () => {
     }
   }, [formik.values.state]);
 
-  // Keep your other useEffect hooks for updating field values
+  useEffect(() => {
+    if (formik.values.district && formik.values.areaType === 'rural') {
+      const tehsils = tehsilsByDistrict[formik.values.district] || [];
+      setSelectedTehsils(tehsils);
+      
+      // Reset tehsil and village if district changes
+      if (formik.values.tehsil && !tehsils.includes(formik.values.tehsil)) {
+        formik.setFieldValue('tehsil', '');
+        formik.setFieldValue('village', '');
+      }
+    } else {
+      setSelectedTehsils([]);
+    }
+  }, [formik.values.district, formik.values.areaType]);
+
+  useEffect(() => {
+    if (formik.values.district && formik.values.areaType === 'urban') {
+      const urbanAreas = urbanAreasByDistrict[formik.values.district] || [];
+      setSelectedUrbanAreas(urbanAreas);
+      
+      // Reset cityTown and locality if district changes
+      if (formik.values.cityTown && !urbanAreas.includes(formik.values.cityTown)) {
+        formik.setFieldValue('cityTown', '');
+        formik.setFieldValue('locality', '');
+      }
+    } else {
+      setSelectedUrbanAreas([]);
+    }
+  }, [formik.values.district, formik.values.areaType]);
 
   // Helper function to check if a section is complete (for progress indicator)
   const isSectionComplete = (sectionNumber) => {
