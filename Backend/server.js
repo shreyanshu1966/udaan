@@ -9,6 +9,7 @@ const Mca21 = require('./models/Mca21');
 const UnifiedProperty = require('./models/UnifiedProperty');
 const { generatePropertyData } = require('./utils/dataGenerator');
 const { integratePropertyData } = require('./utils/dataIntegrator');
+const { mapSourceData } = require('./utils/dataMapper');
 
 const app = express();
 
@@ -40,13 +41,13 @@ app.get('/api/property/:propertyId', async (req, res) => {
       Mca21.findOne({ propertyId })
     ]);
 
-    // Combine the data
+    // Apply standardized mapping to each data source
     const combinedData = {
       propertyId,
-      doris: dorisData || null,
-      dlr: dlrData || null,
-      cersai: cersaiData || null,
-      mca21: mca21Data || null
+      doris: dorisData ? mapSourceData(dorisData, 'doris') : null,
+      dlr: dlrData ? mapSourceData(dlrData, 'dlr') : null,
+      cersai: cersaiData ? mapSourceData(cersaiData, 'cersai') : null,
+      mca21: mca21Data ? mapSourceData(mca21Data, 'mca21') : null
     };
 
     res.json(combinedData);
