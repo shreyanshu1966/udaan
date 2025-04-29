@@ -2,10 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
+import axios from 'axios'; // Make sure to import axios
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { indianStates, districtsByState,urbanAreasByDistrict,tehsilsByDistrict,villagesByTehsil,identifierTypes,propertyTypes} from '../data/indianStates';
-import { generatePropertyData } from '../utils/dataGenerator';
+import { indianStates, districtsByState, urbanAreasByDistrict, tehsilsByDistrict, villagesByTehsil, identifierTypes, propertyTypes } from '../data/indianStates';
+
+// Create a utility function to format dates for rendering
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  if (dateStr === 'N/A') return 'N/A';
+  
+  try {
+    // Parse and format date string
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    return date.toLocaleDateString();
+  } catch (e) {
+    return dateStr;
+  }
+};
 
 const PropertySearchForm = () => {
   // State for controlling conditional form fields and UI elements
@@ -89,22 +104,26 @@ const PropertySearchForm = () => {
       registrationDateTo: null
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setIsSubmitting(true);
       console.log('Form submitted with values:', values);
       
-      // Generate random data based on form input instead of API call
-      setTimeout(() => {
-        const generatedData = generatePropertyData(values);
-        console.log('Generated data:', generatedData);
+      try {
+        // Call the backend API to generate data
+        const response = await axios.post('http://localhost:5000/api/generate-property', values);
+        console.log('Generated data from backend:', response.data);
         
         setIsSubmitting(false);
         setSubmittedData({
           ...values,
-          generatedData: generatedData  // Store the generated data
+          generatedData: response.data  // Use the response from the backend
         });
         setSearchSuccess(true);
-      }, 1500);
+      } catch (error) {
+        console.error('Error generating property data:', error);
+        setIsSubmitting(false);
+        alert('Error generating property data. Please try again.');
+      }
     }
   });
 
@@ -1222,11 +1241,7 @@ const PropertySearchForm = () => {
                             <div className="col-md-6">
                               <p><strong>Owner:</strong> {submittedData.generatedData?.doris?.ownerName}</p>
                               <p><strong>Document No:</strong> {submittedData.generatedData?.doris?.documentNumber}</p>
-                              <p><strong>Registration Date:</strong> {
-                                typeof submittedData.generatedData?.doris?.registrationDate === 'object' 
-                                  ? submittedData.generatedData.doris.registrationDate.toLocaleDateString() 
-                                  : submittedData.generatedData?.doris?.registrationDate
-                              }</p>
+                              <p><strong>Registration Date:</strong> {formatDate(submittedData.generatedData?.doris?.registrationDate)}</p>
                             </div>
                             <div className="col-md-6">
                               <p><strong>Property ID:</strong> {submittedData.generatedData?.doris?.propertyID}</p>
@@ -1253,11 +1268,7 @@ const PropertySearchForm = () => {
                             <div className="col-md-6">
                               <p><strong>Land Use:</strong> {submittedData.generatedData?.dlr?.landUseType}</p>
                               <p><strong>Mutation Status:</strong> {submittedData.generatedData?.dlr?.mutationStatus}</p>
-                              <p><strong>Last Updated:</strong> {
-                                typeof submittedData.generatedData?.dlr?.lastUpdated === 'object'
-                                  ? submittedData.generatedData.dlr.lastUpdated.toLocaleDateString()
-                                  : submittedData.generatedData?.dlr?.lastUpdated
-                              }</p>
+                              <p><strong>Last Updated:</strong> {formatDate(submittedData.generatedData?.dlr?.lastUpdated)}</p>
                             </div>
                           </div>
                         </div>
@@ -1284,16 +1295,8 @@ const PropertySearchForm = () => {
                               {submittedData.generatedData?.cersai?.isMortgaged ? (
                                 <>
                                   <p><strong>Loan Type:</strong> {submittedData.generatedData?.cersai?.loanType}</p>
-                                  <p><strong>Start Date:</strong> {
-                                    typeof submittedData.generatedData?.cersai?.loanStartDate === 'object'
-                                      ? submittedData.generatedData.cersai.loanStartDate.toLocaleDateString()
-                                      : submittedData.generatedData?.cersai?.loanStartDate
-                                  }</p>
-                                  <p><strong>End Date:</strong> {
-                                    typeof submittedData.generatedData?.cersai?.loanEndDate === 'object'
-                                      ? submittedData.generatedData.cersai.loanEndDate.toLocaleDateString()
-                                      : submittedData.generatedData?.cersai?.loanEndDate
-                                  }</p>
+                                  <p><strong>Start Date:</strong> {formatDate(submittedData.generatedData?.cersai?.loanStartDate)}</p>
+                                  <p><strong>End Date:</strong> {formatDate(submittedData.generatedData?.cersai?.loanEndDate)}</p>
                                 </>
                               ) : (
                                 <p><strong>Status:</strong> No encumbrance found</p>
@@ -1319,11 +1322,7 @@ const PropertySearchForm = () => {
                             <div className="col-md-6">
                               <p><strong>Status:</strong> {submittedData.generatedData?.mca21?.status}</p>
                               <p><strong>Director:</strong> {submittedData.generatedData?.mca21?.directorName}</p>
-                              <p><strong>Incorporation:</strong> {
-                                typeof submittedData.generatedData?.mca21?.incorporationDate === 'object'
-                                  ? submittedData.generatedData.mca21.incorporationDate.toLocaleDateString()
-                                  : submittedData.generatedData?.mca21?.incorporationDate
-                              }</p>
+                              <p><strong>Incorporation:</strong> {formatDate(submittedData.generatedData?.mca21?.incorporationDate)}</p>
                             </div>
                           </div>
                         </div>

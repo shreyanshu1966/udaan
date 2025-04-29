@@ -6,6 +6,7 @@ const Doris = require('./models/Doris');
 const Dlr = require('./models/Dlr');
 const Cersai = require('./models/Cersai');
 const Mca21 = require('./models/Mca21');
+const { generatePropertyData } = require('./utils/dataGenerator');
 
 const app = express();
 
@@ -89,6 +90,50 @@ app.get('/api/mca21', async (req, res) => {
     res.json(mca21Data);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Generate Property Data Route
+app.post('/api/generate-property', async (req, res) => {
+  try {
+    const formData = req.body;
+    
+    if (!formData) {
+      return res.status(400).json({ error: 'Form data is required' });
+    }
+    
+    console.log('Received form data for property generation:', formData);
+    
+    // Generate property data based on the form inputs
+    const generatedData = generatePropertyData(formData);
+    
+    // Optional: Save the generated data to database
+    try {
+      // Create new records in the database if needed
+      const dorisRecord = new Doris(generatedData.doris);
+      const dlrRecord = new Dlr(generatedData.dlr);
+      const cersaiRecord = new Cersai(generatedData.cersai);
+      const mca21Record = new Mca21(generatedData.mca21);
+
+      // Save records to database - comment this out if you don't want to save to DB
+      // await Promise.all([
+      //   dorisRecord.save(),
+      //   dlrRecord.save(),
+      //   cersaiRecord.save(), 
+      //   mca21Record.save()
+      // ]);
+      
+      console.log('Generated property data with ID:', generatedData.propertyId);
+    } catch (dbError) {
+      console.error('Database error (continuing with response):', dbError);
+      // Continue even if DB saving fails - we'll still return the generated data
+    }
+    
+    // Return the generated data
+    res.json(generatedData);
+  } catch (error) {
+    console.error('Error generating property data:', error);
+    res.status(500).json({ error: error.message || 'Error generating property data' });
   }
 });
 
