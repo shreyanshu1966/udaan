@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { indianStates, districtsByState,urbanAreasByDistrict,tehsilsByDistrict,villagesByTehsil,identifierTypes,propertyTypes} from '../data/indianStates';
+import { generatePropertyData } from '../utils/dataGenerator';
 
 const PropertySearchForm = () => {
   // State for controlling conditional form fields and UI elements
@@ -92,13 +93,17 @@ const PropertySearchForm = () => {
       setIsSubmitting(true);
       console.log('Form submitted with values:', values);
       
-      // Simulate API call
+      // Generate random data based on form input instead of API call
       setTimeout(() => {
+        const generatedData = generatePropertyData(values);
+        console.log('Generated data:', generatedData);
+        
         setIsSubmitting(false);
-        setSubmittedData(values); // Store the submitted values
+        setSubmittedData({
+          ...values,
+          generatedData: generatedData  // Store the generated data
+        });
         setSearchSuccess(true);
-        // Don't hide success message automatically
-        // setTimeout(() => setSearchSuccess(false), 3000);
       }, 1500);
     }
   });
@@ -1185,15 +1190,144 @@ const PropertySearchForm = () => {
                         {submittedData.registrationDateFrom && (
                           <li>
                             <strong>Registration Date Range:</strong> {
-                              `${submittedData.registrationDateFrom.toLocaleDateString()} to ${
+                              // Check if registrationDateFrom is a Date object before calling toLocaleDateString
+                              `${typeof submittedData.registrationDateFrom.toLocaleDateString === 'function' 
+                                ? submittedData.registrationDateFrom.toLocaleDateString() 
+                                : String(submittedData.registrationDateFrom)} to ${
                                 submittedData.registrationDateTo 
-                                  ? submittedData.registrationDateTo.toLocaleDateString() 
+                                  ? (typeof submittedData.registrationDateTo.toLocaleDateString === 'function'
+                                      ? submittedData.registrationDateTo.toLocaleDateString()
+                                      : String(submittedData.registrationDateTo)) 
                                   : 'Present'
                               }`
                             }
                           </li>
                         )}
                       </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="row mt-4">
+                    <div className="col-12">
+                      <h5 className="border-bottom pb-2 text-primary">Generated Property Data Preview</h5>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <div className="card h-100">
+                        <div className="card-header bg-light">
+                          <h6 className="mb-0">DORIS - Property Registration</h6>
+                        </div>
+                        <div className="card-body small">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <p><strong>Owner:</strong> {submittedData.generatedData?.doris?.ownerName}</p>
+                              <p><strong>Document No:</strong> {submittedData.generatedData?.doris?.documentNumber}</p>
+                              <p><strong>Registration Date:</strong> {
+                                typeof submittedData.generatedData?.doris?.registrationDate === 'object' 
+                                  ? submittedData.generatedData.doris.registrationDate.toLocaleDateString() 
+                                  : submittedData.generatedData?.doris?.registrationDate
+                              }</p>
+                            </div>
+                            <div className="col-md-6">
+                              <p><strong>Property ID:</strong> {submittedData.generatedData?.doris?.propertyID}</p>
+                              <p><strong>Land Type:</strong> {submittedData.generatedData?.doris?.landType}</p>
+                              <p><strong>Land Area:</strong> {submittedData.generatedData?.doris?.landArea}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <div className="card h-100">
+                        <div className="card-header bg-light">
+                          <h6 className="mb-0">DLR - Land Records</h6>
+                        </div>
+                        <div className="card-body small">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <p><strong>Khasra No:</strong> {submittedData.generatedData?.dlr?.khasraNumber}</p>
+                              <p><strong>Khata No:</strong> {submittedData.generatedData?.dlr?.khataNumber}</p>
+                              <p><strong>Plot No:</strong> {submittedData.generatedData?.dlr?.plotNumber}</p>
+                            </div>
+                            <div className="col-md-6">
+                              <p><strong>Land Use:</strong> {submittedData.generatedData?.dlr?.landUseType}</p>
+                              <p><strong>Mutation Status:</strong> {submittedData.generatedData?.dlr?.mutationStatus}</p>
+                              <p><strong>Last Updated:</strong> {
+                                typeof submittedData.generatedData?.dlr?.lastUpdated === 'object'
+                                  ? submittedData.generatedData.dlr.lastUpdated.toLocaleDateString()
+                                  : submittedData.generatedData?.dlr?.lastUpdated
+                              }</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <div className="card h-100">
+                        <div className="card-header bg-light">
+                          <h6 className="mb-0">CERSAI - Encumbrance</h6>
+                        </div>
+                        <div className="card-body small">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <p><strong>Mortgaged:</strong> {submittedData.generatedData?.cersai?.isMortgaged ? 'Yes' : 'No'}</p>
+                              {submittedData.generatedData?.cersai?.isMortgaged && (
+                                <>
+                                  <p><strong>Bank:</strong> {submittedData.generatedData?.cersai?.bankName}</p>
+                                  <p><strong>Loan Amount:</strong> {submittedData.generatedData?.cersai?.loanAmount}</p>
+                                </>
+                              )}
+                            </div>
+                            <div className="col-md-6">
+                              {submittedData.generatedData?.cersai?.isMortgaged ? (
+                                <>
+                                  <p><strong>Loan Type:</strong> {submittedData.generatedData?.cersai?.loanType}</p>
+                                  <p><strong>Start Date:</strong> {
+                                    typeof submittedData.generatedData?.cersai?.loanStartDate === 'object'
+                                      ? submittedData.generatedData.cersai.loanStartDate.toLocaleDateString()
+                                      : submittedData.generatedData?.cersai?.loanStartDate
+                                  }</p>
+                                  <p><strong>End Date:</strong> {
+                                    typeof submittedData.generatedData?.cersai?.loanEndDate === 'object'
+                                      ? submittedData.generatedData.cersai.loanEndDate.toLocaleDateString()
+                                      : submittedData.generatedData?.cersai?.loanEndDate
+                                  }</p>
+                                </>
+                              ) : (
+                                <p><strong>Status:</strong> No encumbrance found</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="col-md-6 mb-3">
+                      <div className="card h-100">
+                        <div className="card-header bg-light">
+                          <h6 className="mb-0">MCA21 - Company Details</h6>
+                        </div>
+                        <div className="card-body small">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <p><strong>Company:</strong> {submittedData.generatedData?.mca21?.companyName}</p>
+                              <p><strong>CIN:</strong> {submittedData.generatedData?.mca21?.companyCIN}</p>
+                              <p><strong>Type:</strong> {submittedData.generatedData?.mca21?.companyType}</p>
+                            </div>
+                            <div className="col-md-6">
+                              <p><strong>Status:</strong> {submittedData.generatedData?.mca21?.status}</p>
+                              <p><strong>Director:</strong> {submittedData.generatedData?.mca21?.directorName}</p>
+                              <p><strong>Incorporation:</strong> {
+                                typeof submittedData.generatedData?.mca21?.incorporationDate === 'object'
+                                  ? submittedData.generatedData.mca21.incorporationDate.toLocaleDateString()
+                                  : submittedData.generatedData?.mca21?.incorporationDate
+                              }</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
@@ -1214,13 +1348,11 @@ const PropertySearchForm = () => {
                       type="button" 
                       className="btn btn-primary" 
                       onClick={() => {
-                        setSearchSuccess(false);
-                        setSubmittedData(null);
-                        // Here you would typically navigate to search results
-                        alert("In a real app, this would show your search results.");
+                        // Here you would navigate to a detailed results page
+                        alert("In a real app, this would show detailed search results with all generated data.");
                       }}
                     >
-                      View Search Results
+                      View Detailed Results
                     </button>
                   </div>
                 </div>
