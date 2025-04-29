@@ -132,3 +132,48 @@ body {
 .read-the-docs {
   color: #888;
 }
+
+/* PDF Export Styles */
+@media print {
+  #searchResults {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  .card {
+    break-inside: avoid;
+  }
+  
+  .btn {
+    display: none !important;
+  }
+  
+  .card-header {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .text-primary {
+    color: #000 !important;
+  }
+  
+  .border-success {
+    border-color: #000 !important;
+  }
+  
+  .bg-success {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+  }
+  
+  .small {
+    font-size: 90% !important;
+  }
+  
+  /* Ensure proper page breaks */
+  .row {
+    break-inside: avoid;
+  }
+}
