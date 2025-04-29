@@ -9,15 +9,23 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => navigate('/')}>
-            <span className="text-primary text-xl font-bold">EstateSearch</span>
+          {/* Logo and Name */}
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate('/')}
+          >
+            <img
+              src={"../src/assets/OP-LOGO-(NAVBAR).png"}
+              alt="Ominiprop Logo"
+              className="h-10 w-10 mr-3" // Adjust size and spacing
+            />
+            <span className="text-primary text-xl font-bold">Ominiprop</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
-              {['Home', 'Search', 'Features', 'Pricing'].map((item, index) => (
+              {['Home', 'Search', 'Features' ].map((item, index) => (
                 <span
                   key={index}
                   onClick={() => navigate(item === 'Home' ? '/' : `/${item.toLowerCase()}`)}
@@ -35,7 +43,10 @@ const Navbar = () => {
               <Button variant="ghost" onClick={() => navigate('/login')}>
                 Login
               </Button>
-              <Button onClick={() => navigate('/signup')} className="bg-primary hover:bg-primary/90 text-white">
+              <Button
+                onClick={() => navigate('/signup')}
+                className="bg-primary hover:bg-primary/90 text-white"
+              >
                 Sign up
               </Button>
             </div>
@@ -44,8 +55,19 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button className="text-gray-600 hover:text-estate-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
           </div>
