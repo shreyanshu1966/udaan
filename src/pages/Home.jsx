@@ -3,10 +3,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/ui/Button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 import { Search, ShieldCheck, Timer, BarChart, Building, Users, Database, Globe } from 'lucide-react';
 
 const Home = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const features = [
     {
