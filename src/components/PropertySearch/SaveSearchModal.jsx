@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import { savedSearchAPI } from '../../utils/api';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import { FaSave, FaTimes } from 'react-icons/fa';
 
@@ -76,7 +76,7 @@ const SaveSearchModal = ({ isOpen, onClose, searchData }) => {
         }
       };
       
-      await axios.post('http://localhost:5000/api/saved-searches', dataToSave, config);
+      await savedSearchAPI.saveSearch(dataToSave);
       
       setSuccess('Search saved successfully!');
       

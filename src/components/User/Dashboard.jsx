@@ -37,13 +37,7 @@ const Dashboard = () => {
       try {
         setSearchesLoading(true);
         
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        };
-        
-        const response = await savedSearchAPI.get('/saved-searches', config);
+        const response = await savedSearchAPI.getAllSearches();
         setSavedSearches(response.data);
         setSearchesError(null);
       } catch (error) {
@@ -65,13 +59,7 @@ const Dashboard = () => {
     if (!window.confirm('Are you sure you want to delete this saved search?')) return;
     
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
-      
-      await savedSearchAPI.delete(`/saved-searches/${id}`, config);
+      await savedSearchAPI.deleteSearch(id);
       
       // Update state
       setSavedSearches(savedSearches.filter(search => search._id !== id));
@@ -87,16 +75,9 @@ const Dashboard = () => {
 
   const handleRenameSearch = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
-      
-      await savedSearchAPI.put(
-        `/saved-searches/${renameDialog.id}`, 
-        { searchName: renameDialog.name },
-        config
+      await savedSearchAPI.updateSearch(
+        renameDialog.id, 
+        { searchName: renameDialog.name }
       );
       
       // Update state
