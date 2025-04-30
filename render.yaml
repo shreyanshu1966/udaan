@@ -21,11 +21,12 @@ services:
       - key: CORS_ORIGIN
         value: https://udaan-app.onrender.com
 
-  - type: static
+  - type: web
     name: udaan-app
+    env: static
     region: oregon
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
     plan: free
     envVars:
       - key: NODE_VERSION
