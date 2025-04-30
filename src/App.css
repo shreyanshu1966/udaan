@@ -99,6 +99,16 @@ body {
   padding: 0.5rem 1.5rem;
 }
 
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .card-body {

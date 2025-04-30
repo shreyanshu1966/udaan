@@ -11,6 +11,8 @@
   /* Theme colors */
   --color-primary: #2c3e50;
   --color-secondary: #26a69a;
+  --color-primary-light: rgba(44, 62, 80, 0.1);
+  --color-secondary-light: rgba(38, 166, 154, 0.1);
   
   font-synthesis: none;
   text-rendering: optimizeLegibility;

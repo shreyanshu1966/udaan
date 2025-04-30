@@ -27,10 +27,10 @@ import { useLocation } from 'react-router-dom';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2196f3',
+      main: '#2c3e50', // Updated from blue to primary color
     },
     secondary: {
-      main: '#ff4081',
+      main: '#26a69a', // Updated from pink to secondary color
     },
   },
   typography: {

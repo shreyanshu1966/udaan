@@ -98,16 +98,16 @@ const SearchMethodStep = ({ formik }) => {
                   overflow: 'hidden',
                   border: '2px solid',
                   borderColor: formik.values.searchMethod === method.id ? 
-                    'primary.main' : 'transparent',
+                    '#2c3e50' : 'transparent', // Changed from primary.main to explicit primary color
                   backgroundColor: formik.values.searchMethod === method.id ?
-                    'rgba(33, 150, 243, 0.04)' : '#fff',
+                    'rgba(44, 62, 80, 0.04)' : '#fff', // Changed from blue rgba to primary with opacity
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                    backgroundColor: 'rgba(33, 150, 243, 0.02)',
+                    backgroundColor: 'rgba(44, 62, 80, 0.02)', // Changed from blue rgba to primary with opacity
                     '& .method-icon': {
                       transform: 'scale(1.1)',
-                      color: '#2196f3'
+                      color: '#26a69a' // Changed from #2196f3 to secondary color
                     }
                   }
                 }}

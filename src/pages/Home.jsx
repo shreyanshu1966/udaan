@@ -52,13 +52,13 @@ const Home = () => {
     },
     {
       icon: <Database size={32} />,
-      value: "15+",
+      value: "4+",
       label: "Databases",
       delay: "animate-delay-300",
     },
     {
       icon: <Globe size={32} />,
-      value: "25+",
+      value: "1+",
       label: "Countries",
       delay: "animate-delay-400",
     },

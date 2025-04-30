@@ -1,12 +1,12 @@
 /* Custom styles for Property Search */
 .form-control:focus,
 .form-select:focus {
-  border-color: #26a69a;
+  border-color: var(--color-secondary);
   box-shadow: 0 0 0 0.2rem rgba(38, 166, 154, 0.25);
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #2c3e50 30%, #26a69a 90%);
+  background: linear-gradient(45deg, var(--color-primary) 30%, var(--color-secondary) 90%);
   border: none;
   box-shadow: 0 3px 5px 2px rgba(38, 166, 154, 0.3);
   transition: all 0.3s ease;
@@ -40,7 +40,7 @@
 }
 
 .search-method-card:hover {
-  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+  box-shadow: 0 4px 8px rgba(44, 62, 80, 0.2);
 }
 
 .search-method-card.selected {
@@ -194,11 +194,11 @@
 }
 
 .MuiInputLabel-root.Mui-focused {
-  color: #26a69a;
+  color: var(--color-secondary);
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #26a69a;
+  border-color: var(--color-secondary);
 }
 
 .MuiSelect-select {

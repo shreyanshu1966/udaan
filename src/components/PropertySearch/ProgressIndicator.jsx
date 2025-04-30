@@ -31,7 +31,7 @@ const ProgressIndicator = ({ activeStep, setActiveStep, isSectionComplete }) => 
             initial={{ width: '0%' }}
             animate={{ 
               width: `${((activeStep - 1) / 3) * 100}%`,
-              backgroundColor: '#2196f3'
+              backgroundColor: '#2c3e50' // Primary color
             }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
             style={{

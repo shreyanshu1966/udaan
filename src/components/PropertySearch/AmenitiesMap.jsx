@@ -37,7 +37,7 @@ function SetViewOnChange({ center }) {
 const amenityTypes = [
   { id: 'school', label: 'Schools', icon: <FaSchool />, color: '#FF5722', osmTag: 'amenity=school' },
   { id: 'hospital', label: 'Healthcare', icon: <FaHospital />, color: '#E91E63', osmTag: 'amenity=hospital' },
-  { id: 'transport', label: 'Transportation', icon: <FaSubway />, color: '#2196F3', osmTag: 'public_transport=station' },
+  { id: 'transport', label: 'Transportation', icon: <FaSubway />, color: '#2c3e50', osmTag: 'public_transport=station' }, // Changed from blue to primary color
   { id: 'shopping', label: 'Shopping', icon: <FaShoppingCart />, color: '#4CAF50', osmTag: 'shop=supermarket' },
   { id: 'food', label: 'Restaurants', icon: <FaUtensils />, color: '#FFC107', osmTag: 'amenity=restaurant' }
 ];

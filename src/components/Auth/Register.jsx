@@ -139,7 +139,7 @@ const Register = () => {
               <Box sx={{ textAlign: 'center', mt: 2 }}>
                 <Typography variant="body2">
                   Already have an account?{' '}
-                  <Link to="/login" style={{ color: '#2196f3', textDecoration: 'none' }}>
+                  <Link to="/login" style={{ color: '#26a69a', textDecoration: 'none' }}>
                     Login here
                   </Link>
                 </Typography>

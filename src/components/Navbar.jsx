@@ -43,7 +43,10 @@ const Navbar = () => {
           {!user ? (
             <div className="hidden md:block">
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" onClick={() => navigate('/login')}>
+                <Button 
+                  onClick={() => navigate('/login')}
+                  className="border border-secondary text-secondary hover:bg-secondary hover:text-white"
+                >
                   Login
                 </Button>
                 <Button
@@ -57,7 +60,10 @@ const Navbar = () => {
           ) : (
             <div className="hidden md:block">
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" onClick={() => navigate('/dashboard')}>
+                <Button 
+                  onClick={() => navigate('/dashboard')}
+                  className="border border-secondary text-secondary hover:bg-secondary hover:text-white"
+                >
                   My Dashboard
                 </Button>
                 <Button
@@ -72,7 +78,7 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button className="text-gray-600 hover:text-estate-primary">
+            <button className="text-gray-600 hover:text-secondary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
