@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { savedSearchAPI } from '../../utils/api';
 import { 
   Box, Container, Typography, Paper, Tabs, Tab, Button, 
   Divider, Card, CardContent, Grid, Chip, IconButton, 
@@ -43,7 +43,7 @@ const Dashboard = () => {
           }
         };
         
-        const response = await axios.get('http://localhost:5000/api/saved-searches', config);
+        const response = await savedSearchAPI.get('/saved-searches', config);
         setSavedSearches(response.data);
         setSearchesError(null);
       } catch (error) {
@@ -71,7 +71,7 @@ const Dashboard = () => {
         }
       };
       
-      await axios.delete(`http://localhost:5000/api/saved-searches/${id}`, config);
+      await savedSearchAPI.delete(`/saved-searches/${id}`, config);
       
       // Update state
       setSavedSearches(savedSearches.filter(search => search._id !== id));
@@ -93,8 +93,8 @@ const Dashboard = () => {
         }
       };
       
-      await axios.put(
-        `http://localhost:5000/api/saved-searches/${renameDialog.id}`, 
+      await savedSearchAPI.put(
+        `/saved-searches/${renameDialog.id}`, 
         { searchName: renameDialog.name },
         config
       );
