@@ -73,9 +73,11 @@ const PropertySearchForm = () => {
 
   // Form validation schema
   const validationSchema = Yup.object({
+    // Location validation
     state: Yup.string().required('Please select a state'),
     district: Yup.string().required('Please select a district'),
     areaType: Yup.string().required('Please select urban or rural'),
+    
     // Conditional validation based on area type
     cityTown: Yup.string().when('areaType', {
       is: 'urban',
@@ -84,7 +86,9 @@ const PropertySearchForm = () => {
     }),
     locality: Yup.string().when('areaType', {
       is: 'urban',
-      then: () => Yup.string().required('Please enter a locality'),
+      then: () => Yup.string().required('Please enter a locality')
+        .min(2, 'Locality must be at least 2 characters')
+        .max(100, 'Locality name is too long'),
       otherwise: () => Yup.string()
     }),
     tehsil: Yup.string().when('areaType', {
@@ -97,11 +101,102 @@ const PropertySearchForm = () => {
       then: () => Yup.string().required('Please select a village'),
       otherwise: () => Yup.string()
     }),
+    
+    // PIN code validation - Should be exactly 6 digits for Indian PIN codes
     pinCode: Yup.string()
-      .matches(/^[0-9]{6}$/, 'Pin code must be exactly 6 digits')
+      .matches(/^[0-9]{6}$/, 'PIN code must be exactly 6 digits')
       .nullable(),
+    
+    // Search method validation
     searchMethod: Yup.string().required('Please select a search method'),
-    // Other validation rules can be added as needed
+    
+    // Property Address validation (conditional)
+    plotNumber: Yup.string().when('searchMethod', {
+      is: 'propertyAddress',
+      then: () => Yup.string()
+        .max(20, 'Plot number should be maximum 20 characters')
+    }),
+    buildingName: Yup.string().when('searchMethod', {
+      is: 'propertyAddress',
+      then: () => Yup.string()
+        .max(100, 'Building name should be maximum 100 characters')
+    }),
+    streetName: Yup.string().when('searchMethod', {
+      is: 'propertyAddress',
+      then: () => Yup.string()
+        .max(100, 'Street name should be maximum 100 characters')
+    }),
+    
+    // Owner Name validation (conditional)
+    ownerName: Yup.string().when('searchMethod', {
+      is: 'ownerName',
+      then: () => Yup.string()
+        .required('Owner name is required')
+        .min(3, 'Owner name must be at least 3 characters')
+        .max(100, 'Owner name is too long')
+    }),
+    fatherHusbandName: Yup.string().when('searchMethod', {
+      is: 'ownerName',
+      then: () => Yup.string()
+        .max(100, 'Name should be maximum 100 characters')
+    }),
+    
+    // Property Identifier validation (conditional)
+    identifierType: Yup.string().when('searchMethod', {
+      is: 'propertyIdentifier',
+      then: () => Yup.string().required('Please select identifier type')
+    }),
+    identifierValue: Yup.string().when(['searchMethod', 'identifierType'], {
+      is: (searchMethod, identifierType) => searchMethod === 'propertyIdentifier' && identifierType,
+      then: () => Yup.string()
+        .required('Please enter identifier value')
+        .min(2, 'Value is too short')
+        .max(50, 'Value is too long')
+    }),
+    
+    // Registration Details validation (conditional)
+    sro: Yup.string().when('searchMethod', {
+      is: 'registrationDetails',
+      then: () => Yup.string().required('SRO is required')
+    }),
+    documentNumber: Yup.string().when('searchMethod', {
+      is: 'registrationDetails',
+      then: () => Yup.string()
+        .required('Document number is required')
+        .matches(/^[a-zA-Z0-9\/-]+$/, 'Only letters, numbers, hyphens, and forward slashes are allowed')
+        .min(3, 'Document number is too short')
+        .max(30, 'Document number is too long')
+    }),
+    registrationYear: Yup.string().when('searchMethod', {
+      is: 'registrationDetails',
+      then: () => Yup.string().required('Registration year is required')
+    }),
+    
+    // Company Name validation (conditional)
+    companyName: Yup.string().when('searchMethod', {
+      is: 'companyName',
+      then: () => Yup.string()
+        .required('Company name is required')
+        .min(3, 'Company name must be at least 3 characters')
+        .max(150, 'Company name is too long')
+    }),
+    cinLlpin: Yup.string().when('searchMethod', {
+      is: 'companyName',
+      then: () => Yup.string()
+        .matches(/^[a-zA-Z0-9]+$/, 'Only alphanumeric characters are allowed')
+        .max(21, 'CIN/LLPIN should be maximum 21 characters')
+    }),
+    
+    // Date validation (for filters)
+    registrationDateFrom: Yup.date().nullable(),
+    registrationDateTo: Yup.date().nullable().when('registrationDateFrom', {
+      is: (val) => val instanceof Date && !isNaN(val),
+      then: () => Yup.date()
+        .min(
+          Yup.ref('registrationDateFrom'), 
+          'End date must be after start date'
+        )
+    })
   });
 
   // Initialize formik

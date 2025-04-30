@@ -603,16 +603,25 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                   name="pinCode"
                   type="text"
                   className={`form-control ${formik.touched.pinCode && formik.errors.pinCode ? 'is-invalid' : ''}`}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    // Only allow digits and limit to 6 characters
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    formik.setFieldValue('pinCode', value);
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.pinCode}
                   maxLength={6}
                   placeholder="6-digit PIN code"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                 />
-                <label htmlFor="pinCode">Pin Code <span className="text-muted">(Optional)</span></label>
+                <label htmlFor="pinCode">PIN Code <span className="text-muted">(Optional)</span></label>
               </div>
               {formik.touched.pinCode && formik.errors.pinCode && (
-                <div className="invalid-feedback">{formik.errors.pinCode}</div>
+                <div className="invalid-feedback d-block">{formik.errors.pinCode}</div>
+              )}
+              {formik.values.pinCode && formik.values.pinCode.length > 0 && formik.values.pinCode.length < 6 && (
+                <div className="text-warning small mt-1">PIN code must be exactly 6 digits</div>
               )}
             </div>
           </div>
