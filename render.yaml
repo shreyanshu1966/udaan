@@ -14,9 +14,15 @@ services:
       - key: PORT
         value: 10000
       - key: FRONTEND_URL
-        sync: false
+        fromService:
+          name: udaan-frontend
+          type: web
+          property: url
       - key: CORS_ORIGIN
-        sync: false
+        fromService:
+          name: udaan-frontend
+          type: web
+          property: url
       - key: JWT_SECRET
         generateValue: true
       - key: MONGODB_URI
