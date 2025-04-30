@@ -16,8 +16,6 @@ services:
         value: mongodb+srv://shreyanshumaske1966:<db_password>@cluster0.lo9ruem.mongodb.net/udaan?retryWrites=true&w=majority&appName=Cluster0
       - key: FRONTEND_URL
         value: https://udaan-app-0fnf.onrender.com
-      - key: CORS_ORIGIN
-        value: https://udaan-app-0fnf.onrender.com
 
   - name: udaan-app
     type: web
