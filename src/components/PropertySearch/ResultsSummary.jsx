@@ -305,7 +305,10 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
 
       {/* Hidden PDF template */}
       <div style={{ display: 'none' }}>
-        <PdfTemplate data={submittedData.generatedData} />
+        <PdfTemplate 
+          data={submittedData.generatedData} 
+          searchCriteria={submittedData}
+        />
       </div>
 
       {user && (
