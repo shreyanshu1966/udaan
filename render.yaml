@@ -20,13 +20,14 @@ services:
         value: https://udaan-app.onrender.com
 
   - name: udaan-app
-    type: static
+    type: web
+    env: static
     buildCommand: "npm install && npm run build"
-    publishPath: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         value: https://udaan-backend.onrender.com/api
-    redirects:
-      - source: /*
+    routes:
+      - type: rewrite
+        source: /*
         destination: /index.html
-        type: rewrite
