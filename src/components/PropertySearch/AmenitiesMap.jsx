@@ -51,6 +51,20 @@ const AmenitiesMap = ({ propertyLocation }) => {
   const [radius, setRadius] = useState(1000); // 1km default
   const [loading, setLoading] = useState(false);
   
+  // Add safety check for propertyLocation
+  if (!propertyLocation || typeof propertyLocation !== 'object' || !propertyLocation.lat || !propertyLocation.lng) {
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Nearby Amenities
+        </Typography>
+        <div className="alert alert-warning">
+          Location data is not available for amenities mapping.
+        </div>
+      </Box>
+    );
+  }
+  
   // Fetch amenities using Overpass API
   useEffect(() => {
     const fetchAmenities = async () => {
