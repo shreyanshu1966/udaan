@@ -42,6 +42,9 @@ const amenityTypes = [
   { id: 'food', label: 'Restaurants', icon: <FaUtensils />, color: '#FFC107', osmTag: 'amenity=restaurant' }
 ];
 
+// Configuration for Overpass API
+const OVERPASS_API_URL = import.meta.env.VITE_OVERPASS_API_URL || 'https://overpass-api.de/api/interpreter';
+
 const AmenitiesMap = ({ propertyLocation }) => {
   const [places, setPlaces] = useState([]);
   const [selectedType, setSelectedType] = useState('school');
@@ -68,7 +71,7 @@ const AmenitiesMap = ({ propertyLocation }) => {
           out skel qt;
         `;
         
-        const response = await axios.post('https://overpass-api.de/api/interpreter', query, {
+        const response = await axios.post(OVERPASS_API_URL, query, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }

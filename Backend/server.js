@@ -15,8 +15,16 @@ const savedSearchesRoutes = require('./routes/savedSearches');
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-searches', savedSearchesRoutes);
@@ -121,7 +129,7 @@ app.post('/api/generate-property', async (req, res) => {
       const cersaiRecord = new Cersai(generatedData.cersai);
       const mca21Record = new Mca21(generatedData.mca21);
 
-      // Save all records to database (uncommented)
+      // Save all records to database
       await Promise.all([
         dorisRecord.save(),
         dlrRecord.save(),
@@ -218,17 +226,21 @@ app.post('/api/integrate-properties', async (req, res) => {
 
 // Basic route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Udaan API' });
+  res.json({ 
+    message: 'OMNIPROP API',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+  res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { savedSearchAPI } from '../../utils/api';
 import { 
   Box, Container, Typography, Paper, Tabs, Tab, Button, 
   Divider, Card, CardContent, Grid, Chip, IconButton, 
@@ -37,13 +37,7 @@ const Dashboard = () => {
       try {
         setSearchesLoading(true);
         
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        };
-        
-        const response = await axios.get('http://localhost:5000/api/saved-searches', config);
+        const response = await savedSearchAPI.getSavedSearches();
         setSavedSearches(response.data);
         setSearchesError(null);
       } catch (error) {
@@ -65,13 +59,7 @@ const Dashboard = () => {
     if (!window.confirm('Are you sure you want to delete this saved search?')) return;
     
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
-      
-      await axios.delete(`http://localhost:5000/api/saved-searches/${id}`, config);
+      await savedSearchAPI.deleteSavedSearch(id);
       
       // Update state
       setSavedSearches(savedSearches.filter(search => search._id !== id));
@@ -87,16 +75,9 @@ const Dashboard = () => {
 
   const handleRenameSearch = async () => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
-      
-      await axios.put(
-        `http://localhost:5000/api/saved-searches/${renameDialog.id}`, 
-        { searchName: renameDialog.name },
-        config
+      await savedSearchAPI.updateSavedSearch(
+        renameDialog.id, 
+        { searchName: renameDialog.name }
       );
       
       // Update state

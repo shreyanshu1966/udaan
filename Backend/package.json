@@ -5,7 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start:dev": "NODE_ENV=development node server.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "deploy:setup": "npm install && npm run setup:env",
+    "setup:env": "echo 'Environment setup complete, please configure your .env files'",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -22,5 +27,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
