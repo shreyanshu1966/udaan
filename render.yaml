@@ -1,57 +1,32 @@
 services:
-  # Backend API service
-  - type: web
-    name: udaan-backend
+  - name: udaan-backend
+    type: web
     env: node
-    rootDir: Backend
-    buildCommand: npm install
-    startCommand: node server.js
+    buildCommand: "npm install"
+    startCommand: "node server.js"
     plan: free
-    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: FRONTEND_URL
-        fromService:
-          name: udaan-frontend
-          type: web
-          property: host
-        prefix: https://
-      - key: CORS_ORIGIN
-        fromService:
-          name: udaan-frontend
-          type: web
-          property: host
-        prefix: https://
       - key: JWT_SECRET
-        generateValue: true
+        value: your_secure_jwt_secret_for_production
       - key: MONGODB_URI
-        sync: false
+        value: your_mongodb_connection_string
+      - key: FRONTEND_URL
+        value: https://udaan-app.onrender.com
+      - key: CORS_ORIGIN
+        value: https://udaan-app.onrender.com
 
-  # Frontend static site
-  - type: web
-    name: udaan-frontend
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: max-age=31536000, immutable
-      - path: /*.(css|js|svg|jpg|jpeg|png|gif|ico|woff|woff2|ttf|eot)
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
+  - name: udaan-app
+    type: static
+    buildCommand: "npm install && npm run build"
+    publishPath: dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: udaan-backend
-          type: web
-          property: host
-        prefix: https://
-        postfix: /api
+        value: https://udaan-backend.onrender.com/api
+    redirects:
+      - source: /*
+        destination: /index.html
+        type: rewrite
