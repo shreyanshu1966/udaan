@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { indianStates } from '../../data/indianStates';
 import { formatDate } from './utils';
 import { generatePDF } from '../../utils/pdfGenerator';
@@ -14,6 +15,25 @@ const ResultsSummary = ({ submittedData, setSearchSuccess, setSubmittedData, set
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [saveSearchModalOpen, setSaveSearchModalOpen] = useState(false);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate(); // Add this line to import the navigate function
+  
+  // Add a safety check
+  if (!submittedData) {
+    return (
+      <div className="alert alert-warning">
+        No search data available. Please try a new search.
+        <button 
+          className="btn btn-primary mt-2"
+          onClick={() => {
+            setActiveStep(1);
+            setSearchSuccess(false);
+          }}
+        >
+          Start New Search
+        </button>
+      </div>
+    );
+  }
 
   const handleExportPDF = async () => {
     try {
