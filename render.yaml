@@ -24,7 +24,6 @@ services:
   - type: web
     name: udaan-app
     env: static
-    region: oregon
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     plan: free
