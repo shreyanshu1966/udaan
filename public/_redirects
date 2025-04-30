@@ -1,0 +1,3 @@
+# Redirects and headers for Netlify or other compatible platforms
+# This handles SPA routing (redirecting all routes to index.html)
+/*    /index.html   200

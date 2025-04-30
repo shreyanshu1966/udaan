@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const Doris = require('./models/Doris');
 const Dlr = require('./models/Dlr');
@@ -15,8 +16,19 @@ const savedSearchesRoutes = require('./routes/savedSearches');
 
 const app = express();
 
+// Environment configuration
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
+// Enhanced CORS configuration
+app.use(cors({
+  origin: CORS_ORIGIN,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/saved-searches', savedSearchesRoutes);
@@ -221,6 +233,22 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Udaan API' });
 });
 
+// Serve static assets in production
+if (NODE_ENV === 'production') {
+  // Set static folder
+  const staticPath = path.resolve(__dirname, '../dist');
+  app.use(express.static(staticPath));
+
+  // Any route that doesn't match the API should serve the index.html
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.resolve(staticPath, 'index.html'));
+    }
+  });
+
+  console.log('Server configured for production environment');
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -230,5 +258,5 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT} in ${NODE_ENV} mode`);
 });

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { authAPI } from '../utils/api';
 
 export const AuthContext = createContext();
 
@@ -22,13 +22,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      
-      const response = await axios.get('http://localhost:5000/api/auth/profile', config);
+      const response = await authAPI.getProfile();
       
       setUser({
         ...response.data,
@@ -50,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await authAPI.register({
         name,
         email,
         password
@@ -79,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await authAPI.login({
         email,
         password
       });
@@ -115,13 +109,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      };
-      
-      const response = await axios.put('http://localhost:5000/api/auth/profile', userData, config);
+      const response = await authAPI.updateProfile(userData);
       
       // Update user data
       setUser({

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Box, Container, Paper, Typography, LinearProgress } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -22,6 +21,7 @@ import ResultsSummary from './ResultsSummary';
 import ProgressIndicator from './ProgressIndicator';
 import { isSectionComplete } from './utils';
 import { useLocation } from 'react-router-dom';
+import { propertyAPI } from '@/utils/api';
 
 // Create custom theme
 const theme = createTheme({
@@ -141,7 +141,7 @@ const PropertySearchForm = () => {
       
       try {
         // Call the backend API to generate data
-        const response = await axios.post('http://localhost:5000/api/generate-property', values);
+        const response = await propertyAPI.generateProperty(values);
         console.log('Generated data from backend:', response.data);
         
         setIsSubmitting(false);
@@ -281,7 +281,7 @@ const PropertySearchForm = () => {
     
     try {
       // Call the backend API to generate data
-      const response = await axios.post('http://localhost:5000/api/generate-property', values);
+      const response = await propertyAPI.generateProperty(values);
       console.log('Generated data from backend:', response.data);
       
       setIsSubmitting(false);

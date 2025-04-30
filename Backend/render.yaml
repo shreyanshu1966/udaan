@@ -1,0 +1,15 @@
+{
+  "name": "udaan-backend",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "10000",
+    "JWT_SECRET": "${JWT_SECRET}",
+    "MONGODB_URI": "${MONGODB_URI}",
+    "FRONTEND_URL": "https://udaan-app.onrender.com",
+    "CORS_ORIGIN": "https://udaan-app.onrender.com"
+  },
+  "buildCommand": "npm install",
+  "startCommand": "node server.js",
+  "healthCheckPath": "/api",
+  "plan": "free"
+}

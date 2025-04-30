@@ -1,0 +1,16 @@
+{
+  "name": "udaan-app",
+  "env": {
+    "NODE_VERSION": "18.x",
+    "VITE_API_URL": "https://udaan-backend.onrender.com/api"
+  },
+  "buildCommand": "npm install && npm run build",
+  "staticSite": {
+    "buildDirectory": "dist"
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/*", "dest": "/index.html" }
+  ],
+  "plan": "free"
+}
