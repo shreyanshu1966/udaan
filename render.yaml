@@ -13,11 +13,11 @@ services:
       - key: JWT_SECRET
         value: your_secure_jwt_secret_for_production
       - key: MONGODB_URI
-        value: your_mongodb_connection_string
+        value: mongodb+srv://shreyanshumaske1966:<db_password>@cluster0.lo9ruem.mongodb.net/udaan?retryWrites=true&w=majority&appName=Cluster0
       - key: FRONTEND_URL
-        value: https://udaan-app.onrender.com
+        value: https://udaan-app-0fnf.onrender.com
       - key: CORS_ORIGIN
-        value: https://udaan-app.onrender.com
+        value: https://udaan-app-0fnf.onrender.com
 
   - name: udaan-app
     type: web
@@ -26,7 +26,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://udaan-backend.onrender.com/api
+        value: https://udaan-backend-0fnf.onrender.com/api
     routes:
       - type: rewrite
         source: /*
