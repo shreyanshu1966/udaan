@@ -2,8 +2,8 @@ services:
   - name: udaan-backend
     type: web
     env: node
-    buildCommand: "npm install"
-    startCommand: "node server.js"
+    buildCommand: "cd Backend && npm install"
+    startCommand: "node Backend/server.js"
     plan: free
     envVars:
       - key: NODE_ENV
