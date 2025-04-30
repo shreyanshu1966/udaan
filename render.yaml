@@ -3,10 +3,9 @@ services:
     name: udaan-backend
     env: node
     region: oregon
-    plan: starter
+    plan: free
     buildCommand: cd Backend && npm install
     startCommand: cd Backend && node server.js
-    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
@@ -23,17 +22,15 @@ services:
 
   - type: static
     name: udaan-app
+    env: static
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
-      - key: NODE_VERSION
-        value: 18.x
       - key: VITE_API_URL
         value: https://udaan-backend.onrender.com/api
-    routes:
-      - source: /*
-        destination: /index.html
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: public, max-age=86400
+    dependencies:
+      - name: udaan-backend
