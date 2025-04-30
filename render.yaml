@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: udaan-backend
+    env: node
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    region: oregon # Choose a region close to your users
+    plan: free # Using the free tier
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8888
+      - key: RENDER
+        value: true
+      - key: JWT_SECRET
+        sync: false # Requires manual setting in Render dashboard for security
+      - key: MONGODB_URI
+        sync: false # Requires manual setting in Render dashboard for security
+      - key: CORS_ORIGIN
+        value: https://udaan-frontend.onrender.com # Update with your frontend URL
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: web
+    name: udaan-frontend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s dist
+    region: oregon
+    plan: free
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://udaan-backend.onrender.com
+      - key: VITE_APP_ENV
+        value: production
+    healthCheckPath: /
+    autoDeploy: true

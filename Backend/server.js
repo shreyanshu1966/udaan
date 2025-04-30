@@ -240,8 +240,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
-// Additional code - conditionally export the app for Netlify serverless functions
-if (process.env.NETLIFY) {
+// Render deployment configuration
+if (process.env.RENDER) {
+  // Render-specific setup
+  console.log('Running in Render environment');
+} else if (process.env.NETLIFY) {
   // Export handler for Netlify Functions
   module.exports.handler = serverless(app);
 } else {
@@ -249,6 +252,14 @@ if (process.env.NETLIFY) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+}
+
+// Always start server in Render environment
+if (process.env.RENDER) {
+  const PORT = process.env.PORT || 8888;
+  app.listen(PORT, () => {
+    console.log(`Server is running on Render on port ${PORT} in ${process.env.NODE_ENV || 'production'} mode`);
   });
 }
 

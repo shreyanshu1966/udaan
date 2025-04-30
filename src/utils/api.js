@@ -13,10 +13,12 @@ const getBaseUrl = () => {
     return 'http://localhost:8888';
   } else if (hostname.includes('vercel.app')) {
     return 'https://udaan-backend.netlify.app';
+  } else if (hostname.includes('render.com')) {
+    return 'https://udaan-backend.onrender.com'; // Render-specific URL
   }
   
   // Final fallback
-  return 'https://udaan-backend.netlify.app';
+  return 'https://udaan-backend.onrender.com'; // Updated fallback to Render
 };
 
 // Create base API configuration
