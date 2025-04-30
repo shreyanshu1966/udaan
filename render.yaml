@@ -3,7 +3,7 @@ services:
     name: udaan-backend
     env: node
     region: oregon
-    plan: free
+    plan: starter
     buildCommand: cd Backend && npm install
     startCommand: cd Backend && node server.js
     healthCheckPath: /
@@ -21,20 +21,17 @@ services:
       - key: CORS_ORIGIN
         value: https://udaan-app.onrender.com
 
-  - type: web
+  - type: static
     name: udaan-app
-    env: static
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    plan: free
+    publishDir: dist
     envVars:
       - key: NODE_VERSION
         value: 18.x
       - key: VITE_API_URL
         value: https://udaan-backend.onrender.com/api
     routes:
-      - type: rewrite
-        source: /*
+      - source: /*
         destination: /index.html
     headers:
       - path: /*
