@@ -10,6 +10,7 @@
     "start:prod": "NODE_ENV=production node server.js",
     "deploy:setup": "npm install && npm run setup:env",
     "setup:env": "echo 'Environment setup complete, please configure your .env files'",
+    "build": "npm install",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -23,7 +24,8 @@
     "express": "^4.18.2",
     "html2pdf.js": "^0.10.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.3"
+    "mongoose": "^7.6.3",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

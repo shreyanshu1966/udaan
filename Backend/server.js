@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const serverless = require('serverless-http');
 require('dotenv').config();
 const Doris = require('./models/Doris');
 const Dlr = require('./models/Dlr');
@@ -239,8 +240,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
-});
+// Additional code - conditionally export the app for Netlify serverless functions
+if (process.env.NETLIFY) {
+  // Export handler for Netlify Functions
+  module.exports.handler = serverless(app);
+} else {
+  // Start server normally for local development
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+}
+
+// Export the Express app instance for testing or other purposes
+module.exports.app = app;

@@ -1,8 +1,27 @@
 import axios from 'axios';
 
+// Determine API base URL based on environment
+const getBaseUrl = () => {
+  // Use environment variables if available
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // Default fallbacks based on hostname
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:8888';
+  } else if (hostname.includes('vercel.app')) {
+    return 'https://udaan-backend.netlify.app';
+  }
+  
+  // Final fallback
+  return 'https://udaan-backend.netlify.app';
+};
+
 // Create base API configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
