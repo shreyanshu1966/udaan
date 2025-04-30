@@ -44,5 +44,5 @@ services:
         fromService:
           name: udaan-backend
           type: web
-          property: url
+          property: host
         postfix: /api
