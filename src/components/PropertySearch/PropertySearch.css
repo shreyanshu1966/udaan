@@ -158,6 +158,15 @@
   border-color: rgba(38, 166, 154, 0.1);
 }
 
+/* Background utility classes */
+.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary) !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

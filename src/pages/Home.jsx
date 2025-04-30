@@ -5,34 +5,36 @@ import Button from '@/components/ui/Button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { Search, ShieldCheck, Timer, BarChart, Building, Users, Database, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const features = [
     {
       icon: <Search size={40} />,
-      title: "Comprehensive Search",
-      description: "Search across multiple property databases simultaneously",
+      titleKey: "home.features.comprehensiveSearch.title",
+      descriptionKey: "home.features.comprehensiveSearch.description",
       delay: "animate-delay-100",
     },
     {
       icon: <ShieldCheck size={40} />,
-      title: "Secure & Reliable",
-      description: "Your data is protected with enterprise-grade security",
+      titleKey: "home.features.secureReliable.title",
+      descriptionKey: "home.features.secureReliable.description",
       delay: "animate-delay-200",
     },
     {
       icon: <Timer size={40} />,
-      title: "Fast Results",
-      description: "Get instant results from all connected databases",
+      titleKey: "home.features.fastResults.title",
+      descriptionKey: "home.features.fastResults.description",
       delay: "animate-delay-300",
     },
     {
       icon: <BarChart size={40} />,
-      title: "Detailed Analytics",
-      description: "In-depth analysis of property information",
+      titleKey: "home.features.detailedAnalytics.title",
+      descriptionKey: "home.features.detailedAnalytics.description",
       delay: "animate-delay-400",
     },
   ];
@@ -41,25 +43,25 @@ const Home = () => {
     {
       icon: <Building size={32} />,
       value: "1M+",
-      label: "Properties",
+      labelKey: "home.stats.properties",
       delay: "animate-delay-100",
     },
     {
       icon: <Users size={32} />,
       value: "50K+",
-      label: "Active Users",
+      labelKey: "home.stats.activeUsers",
       delay: "animate-delay-200",
     },
     {
       icon: <Database size={32} />,
       value: "4+",
-      label: "Databases",
+      labelKey: "home.stats.databases",
       delay: "animate-delay-300",
     },
     {
       icon: <Globe size={32} />,
       value: "1+",
-      label: "Countries",
+      labelKey: "home.stats.countries",
       delay: "animate-delay-400",
     },
   ];
@@ -82,17 +84,17 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div className="animate-fade-in">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-                  Unified Property Search Platform
+                  {t('home.hero.title')}
                 </h1>
                 <p className="text-lg md:text-xl text-white opacity-90 mb-8 max-w-lg">
-                  Search and verify property details across multiple databases in one place
+                  {t('home.hero.description')}
                 </p>
                 <Button
                   size="lg"
                   onClick={() => navigate('/search')}
                   className="bg-black text-primary hover:bg-opacity-90"
                 >
-                  Get Started
+                  {t('home.hero.getStarted')}
                 </Button>
               </div>
               {!isMobile && (
@@ -123,17 +125,17 @@ const Home = () => {
         <section className="py-20 bg-estate-background">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Our Features</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">{t('home.features.title')}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover how our platform simplifies property data verification
+                {t('home.features.subtitle')}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
                 <div key={index} className={`feature-card animate-zoom-in ${feature.delay}`}>
                   <div className="text-secondary mb-4 flex justify-center">{feature.icon}</div>
-                  <h3 className="text-xl font-semibold mb-3 text-center">{feature.title}</h3>
-                  <p className="text-gray-600 text-center">{feature.description}</p>
+                  <h3 className="text-xl font-semibold mb-3 text-center">{t(feature.titleKey)}</h3>
+                  <p className="text-gray-600 text-center">{t(feature.descriptionKey)}</p>
                 </div>
               ))}
             </div>
@@ -147,7 +149,7 @@ const Home = () => {
                 <div key={index} className={`flex flex-col items-center animate-fade-in ${stat.delay}`}>
                   <div className="text-secondary mb-3">{stat.icon}</div>
                   <div className="text-3xl md:text-4xl font-bold text-gray-800 mb-1">{stat.value}</div>
-                  <div className="text-gray-600 text-center">{stat.label}</div>
+                  <div className="text-gray-600 text-center">{t(stat.labelKey)}</div>
                 </div>
               ))}
             </div>
@@ -163,16 +165,16 @@ const Home = () => {
           </div>
           <div className="container mx-auto px-6 relative z-10">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Ready to get started?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">{t('home.cta.title')}</h2>
               <p className="text-lg text-white opacity-90 mb-8">
-                Join thousands of users who trust our platform for property verification
+                {t('home.cta.description')}
               </p>
               <Button
                 size="lg"
                 onClick={() => navigate('/search')}
                 className="bg-black text-primary hover:bg-opacity-90"
               >
-                Start Searching Now
+                {t('home.cta.button')}
               </Button>
             </div>
           </div>

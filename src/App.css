@@ -109,6 +109,17 @@ body {
   border-color: var(--color-secondary);
 }
 
+/* Background color utility classes */
+.bg-primary {
+  --bs-bg-opacity: 1;
+  background-color: var(--color-primary) !important;
+}
+
+.bg-secondary {
+  --bs-bg-opacity: 1;
+  background-color: var(--color-secondary) !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .card-body {

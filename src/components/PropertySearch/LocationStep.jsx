@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCity, FaHome, FaMapPin } from 'react-icons/fa';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { stateNameToCode, alternativeStateNames } from '../../utils/stateMappings';
+import { useTranslation } from 'react-i18next';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -42,6 +43,7 @@ function MapClickHandler({ onMapClick }) {
 const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedTehsils, toggleTooltip, showTooltip }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loadingAddress, setLoadingAddress] = useState(false);
+  const { t } = useTranslation();
   
   // Handle map click to place a marker
   const handleMapClick = useCallback((event) => {
@@ -326,8 +328,8 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
           <div className="d-flex align-items-center">
             <FaMapMarkerAlt className="me-2 fs-4" />
             <div>
-              <h4 className="mb-0">Step 1: Locate the Property</h4>
-              <p className="mb-0 small">Specify the geographical area</p>
+              <h4 className="mb-0">{t('search.steps.location')}: {t('search.location.title')}</h4>
+              <p className="mb-0 small">{t('search.location.subtitle')}</p>
             </div>
           </div>
         </div>
@@ -338,7 +340,7 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
             <div className="col-12">
               <h5 className="mb-3">
                 <FaMapPin className="me-2" />
-                Pin Location on Map
+                {t('search.location.mapTitle')}
               </h5>
               <div className="map-container">
                 <MapContainer 
@@ -359,13 +361,13 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
               {loadingAddress && (
                 <div className="alert alert-info mt-2">
                   <div className="spinner-border spinner-border-sm me-2" role="status">
-                    <span className="visually-hidden">Loading...</span>
+                    <span className="visually-hidden">{t('common.loading')}</span>
                   </div>
-                  Fetching location details...
+                  {t('search.location.fetchingDetails')}
                 </div>
               )}
               <p className="text-muted mt-2">
-                <small>Click on the map to pin a location and automatically fetch state and district information</small>
+                <small>{t('search.location.mapInstructions')}</small>
               </p>
             </div>
           </div>
@@ -383,14 +385,14 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                   onBlur={formik.handleBlur}
                   value={formik.values.state}
                 >
-                  <option value="">Select State/UT</option>
+                  <option value="">{t('search.location.selectState')}</option>
                   {indianStates.map((state) => (
                     <option key={state.value} value={state.value}>
                       {state.label}
                     </option>
                   ))}
                 </select>
-                <label htmlFor="state">State / Union Territory *</label>
+                <label htmlFor="state">{t('search.location.state')} *</label>
               </div>
               {formik.touched.state && formik.errors.state && (
                 <div className="invalid-feedback">{formik.errors.state}</div>
@@ -408,20 +410,20 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                   value={formik.values.district}
                   disabled={!formik.values.state}
                 >
-                  <option value="">Select District</option>
+                  <option value="">{t('search.location.selectDistrict')}</option>
                   {selectedDistricts.map((district) => (
                     <option key={district} value={district}>
                       {district}
                     </option>
                   ))}
                 </select>
-                <label htmlFor="district">District *</label>
+                <label htmlFor="district">{t('search.location.district')} *</label>
               </div>
               {formik.touched.district && formik.errors.district && (
                 <div className="invalid-feedback">{formik.errors.district}</div>
               )}
               {!formik.values.state && (
-                <div className="form-text text-muted">Please select a state first</div>
+                <div className="form-text text-muted">{t('search.location.selectStateFirst')}</div>
               )}
             </div>
           </div>
@@ -430,7 +432,7 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
             <div className="col-12">
               <label className="form-label fw-bold">
                 <FaHome className="me-2" />
-                Area Type *
+                {t('search.location.areaType.label')} *
               </label>
               <div className="d-flex gap-4">
                 <motion.div
@@ -450,9 +452,9 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                       />
                       <label className="form-check-label">
                         <FaCity className="me-2" />
-                        <span className="fw-bold">Urban</span>
+                        <span className="fw-bold">{t('search.location.areaType.urban')}</span>
                         <br />
-                        <small className="text-muted">City, Town, Municipality</small>
+                        <small className="text-muted">{t('search.location.urbanLabel')}</small>
                       </label>
                     </div>
                   </div>
@@ -475,9 +477,9 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                       />
                       <label className="form-check-label">
                         <FaHome className="me-2" />
-                        <span className="fw-bold">Rural</span>
+                        <span className="fw-bold">{t('search.location.areaType.rural')}</span>
                         <br />
-                        <small className="text-muted">Village, Panchayat</small>
+                        <small className="text-muted">{t('search.location.ruralLabel')}</small>
                       </label>
                     </div>
                   </div>
@@ -502,14 +504,14 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                     value={formik.values.cityTown}
                     disabled={!formik.values.district}
                   >
-                    <option value="">Select City/Town</option>
+                    <option value="">{t('search.location.selectCity')}</option>
                     {selectedUrbanAreas.map((area) => (
                       <option key={area} value={area}>
                         {area}
                       </option>
                     ))}
                   </select>
-                  <label htmlFor="cityTown">City / Town / Municipal Corp *</label>
+                  <label htmlFor="cityTown">{t('search.location.cityTown')} *</label>
                 </div>
                 {formik.touched.cityTown && formik.errors.cityTown && (
                   <div className="invalid-feedback">{formik.errors.cityTown}</div>
@@ -527,9 +529,9 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                     onBlur={formik.handleBlur}
                     value={formik.values.locality}
                     disabled={!formik.values.cityTown}
-                    placeholder="Enter locality name"
+                    placeholder={t('search.location.enterLocality')}
                   />
-                  <label htmlFor="locality">Locality / Ward / Sector *</label>
+                  <label htmlFor="locality">{t('search.location.locality')} *</label>
                 </div>
                 {formik.touched.locality && formik.errors.locality && (
                   <div className="invalid-feedback">{formik.errors.locality}</div>
@@ -551,14 +553,14 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                     value={formik.values.tehsil}
                     disabled={!formik.values.district}
                   >
-                    <option value="">Select Tehsil/Taluk/Mandal</option>
+                    <option value="">{t('search.location.selectTehsil')}</option>
                     {selectedTehsils.map((tehsil) => (
                       <option key={tehsil} value={tehsil}>
                         {tehsil}
                       </option>
                     ))}
                   </select>
-                  <label htmlFor="tehsil">Tehsil / Taluk / Mandal *</label>
+                  <label htmlFor="tehsil">{t('search.location.tehsil')} *</label>
                 </div>
                 {formik.touched.tehsil && formik.errors.tehsil && (
                   <div className="invalid-feedback">{formik.errors.tehsil}</div>
@@ -576,7 +578,7 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                     value={formik.values.village}
                     disabled={!formik.values.tehsil}
                   >
-                    <option value="">Select Village/Panchayat</option>
+                    <option value="">{t('search.location.selectVillage')}</option>
                     {formik.values.tehsil &&
                       (formik.values.tehsil in window.villagesByTehsil
                         ? window.villagesByTehsil[formik.values.tehsil].map((village) => (
@@ -586,7 +588,7 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                           ))
                         : [])}
                   </select>
-                  <label htmlFor="village">Village / Panchayat *</label>
+                  <label htmlFor="village">{t('search.location.village')} *</label>
                 </div>
                 {formik.touched.village && formik.errors.village && (
                   <div className="invalid-feedback">{formik.errors.village}</div>
@@ -611,17 +613,17 @@ const LocationStep = ({ formik, selectedDistricts, selectedUrbanAreas, selectedT
                   onBlur={formik.handleBlur}
                   value={formik.values.pinCode}
                   maxLength={6}
-                  placeholder="6-digit PIN code"
+                  placeholder={t('search.location.pinCodePlaceholder')}
                   inputMode="numeric"
                   pattern="[0-9]*"
                 />
-                <label htmlFor="pinCode">PIN Code <span className="text-muted">(Optional)</span></label>
+                <label htmlFor="pinCode">{t('search.location.pincode')} <span className="text-muted">({t('common.optional')})</span></label>
               </div>
               {formik.touched.pinCode && formik.errors.pinCode && (
                 <div className="invalid-feedback d-block">{formik.errors.pinCode}</div>
               )}
               {formik.values.pinCode && formik.values.pinCode.length > 0 && formik.values.pinCode.length < 6 && (
-                <div className="text-warning small mt-1">PIN code must be exactly 6 digits</div>
+                <div className="text-warning small mt-1">{t('search.location.pinCodeWarning')}</div>
               )}
             </div>
           </div>

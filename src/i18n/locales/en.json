@@ -1,0 +1,116 @@
+{
+  "navbar": {
+    "home": "Home",
+    "search": "Search",
+    "features": "Features",
+    "login": "Login",
+    "signup": "Sign up",
+    "dashboard": "My Dashboard",
+    "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "title": "Unified Property Search Platform",
+      "description": "Search and verify property details across multiple databases in one place",
+      "getStarted": "Get Started"
+    },
+    "features": {
+      "title": "Our Features",
+      "subtitle": "Discover how our platform simplifies property data verification",
+      "comprehensiveSearch": {
+        "title": "Comprehensive Search",
+        "description": "Search across multiple property databases simultaneously"
+      },
+      "secureReliable": {
+        "title": "Secure & Reliable",
+        "description": "Your data is protected with enterprise-grade security"
+      },
+      "fastResults": {
+        "title": "Fast Results",
+        "description": "Get instant results from all connected databases"
+      },
+      "detailedAnalytics": {
+        "title": "Detailed Analytics",
+        "description": "In-depth analysis of property information"
+      }
+    },
+    "stats": {
+      "properties": "Properties",
+      "activeUsers": "Active Users",
+      "databases": "Databases",
+      "countries": "Countries"
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Join thousands of users who trust our platform for property verification",
+      "button": "Start Searching Now"
+    }
+  },
+  "search": {
+    "title": "Property Search",
+    "steps": {
+      "location": "Step 1: Location",
+      "searchMethod": "Step 2: Search Method",
+      "details": "Step 3: Details",
+      "filters": "Step 4: Filters"
+    },
+    "location": {
+      "title": "Location Information",
+      "subtitle": "Specify the geographical area",
+      "state": "State / Union Territory",
+      "district": "District",
+      "areaType": {
+        "label": "Area Type",
+        "urban": "Urban",
+        "rural": "Rural"
+      },
+      "urbanLabel": "City, Town, Municipality",
+      "ruralLabel": "Village, Panchayat",
+      "cityTown": "City / Town",
+      "locality": "Locality / Ward / Sector",
+      "tehsil": "Tehsil / Taluk / Mandal",
+      "village": "Village / Panchayat",
+      "pincode": "PIN Code",
+      "mapTitle": "Pin Location on Map",
+      "mapInstructions": "Click on the map to pin a location and automatically fetch state and district information",
+      "fetchingDetails": "Fetching location details...",
+      "selectState": "Select State/UT",
+      "selectDistrict": "Select District",
+      "selectStateFirst": "Please select a state first",
+      "selectCity": "Select City/Town",
+      "enterLocality": "Enter locality name",
+      "selectTehsil": "Select Tehsil/Taluk/Mandal",
+      "selectVillage": "Select Village/Panchayat",
+      "pinCodePlaceholder": "6-digit PIN code",
+      "pinCodeWarning": "PIN code must be exactly 6 digits"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "clear": "Clear Form",
+      "search": "Search Property"
+    },
+    "successMessage": "Your property search has been submitted."
+  },
+  "dashboard": {
+    "title": "My Dashboard",
+    "welcome": "Welcome back",
+    "savedSearches": "Your Saved Searches",
+    "noSearches": "You don't have any saved searches yet",
+    "startSearch": "Start a New Search"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "viewDetails": "View Details",
+    "changeLang": "भाषा बदलें",
+    "required": "This field is required",
+    "optional": "Optional"
+  }
+}
