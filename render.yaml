@@ -17,12 +17,14 @@ services:
         fromService:
           name: udaan-frontend
           type: web
-          property: url
+          property: host
+        prefix: https://
       - key: CORS_ORIGIN
         fromService:
           name: udaan-frontend
           type: web
-          property: url
+          property: host
+        prefix: https://
       - key: JWT_SECRET
         generateValue: true
       - key: MONGODB_URI
@@ -51,4 +53,5 @@ services:
           name: udaan-backend
           type: web
           property: host
+        prefix: https://
         postfix: /api
