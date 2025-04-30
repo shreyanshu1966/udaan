@@ -1,27 +1,30 @@
 services:
+  # Backend API service
   - type: web
     name: udaan-backend
     env: node
-    region: oregon
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: node server.js
     plan: free
-    buildCommand: cd Backend && npm install
-    startCommand: cd Backend && node server.js
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: JWT_SECRET
+      - key: FRONTEND_URL
         sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
       - key: MONGODB_URI
         sync: false
-      - key: FRONTEND_URL
-        value: https://udaan-app.onrender.com
-      - key: CORS_ORIGIN
-        value: https://udaan-app.onrender.com
 
-  - type: static
-    name: udaan-app
+  # Frontend static site
+  - type: web
+    name: udaan-frontend
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
@@ -29,8 +32,17 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: max-age=31536000, immutable
+      - path: /*.(css|js|svg|jpg|jpeg|png|gif|ico|woff|woff2|ttf|eot)
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
     envVars:
       - key: VITE_API_URL
-        value: https://udaan-backend.onrender.com/api
-    dependencies:
-      - name: udaan-backend
+        fromService:
+          name: udaan-backend
+          type: web
+          property: url
+        postfix: /api
